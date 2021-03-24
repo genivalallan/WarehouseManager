@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace WarehouseManager.Models
 {
@@ -8,6 +9,7 @@ namespace WarehouseManager.Models
     public class Shipping
     {
         [Key]
+        [BindNever]
         [Column("id")]
         public int ID { get; set; }
         // [Required]

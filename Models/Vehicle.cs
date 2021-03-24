@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace WarehouseManager.Models
 {
@@ -8,6 +9,7 @@ namespace WarehouseManager.Models
     public class Vehicle
     {
         [Key]
+        [BindNever]
         [Column("id")]
         public int ID { get; set; }
         [Required]
@@ -19,8 +21,11 @@ namespace WarehouseManager.Models
         public string Plate3 { get; set; }
         [Column("rntrc", TypeName = "varchar(8)")]
         public string RNTRC { get; set; }
+        [BindNever]
         public virtual ICollection<Incoming> Incomings { get; set; }
+        [BindNever]
         public virtual ICollection<Shipping> Shippings { get; set; }
+        [BindNever]
         public virtual ICollection<Enhancement> Enhancements { get; set; }
     }
 }
