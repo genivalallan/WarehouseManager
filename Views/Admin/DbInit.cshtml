@@ -1,0 +1,17 @@
+@model bool
+@{
+    ViewData["Title"] = "Inicialização do banco de dados";
+}
+
+@if(Model)
+{
+    <h3>
+        O banco de dados foi criado com sucesso!
+    </h3>
+}
+else
+{
+    <h3>
+        O banco de dados já existe.
+    </h3>
+}
