@@ -11,12 +11,18 @@ namespace WarehouseManager.Models
         [Key]
         [BindNever]
         [Column("id")]
+        [Display(Name = "ID do Produto")]
         public int ID { get; set; }
+
         [Required]
         [Column("name", TypeName = "varchar(32)")]
+        [Display(Name = "Nome")]
         public string Name { get; set; }
+
         [Column("description", TypeName = "varchar(64)")]
+        [Display(Name = "Descrição")]
         public string Description { get; set; }
+        
         [BindNever]
         public virtual ICollection<Stock> Stocks { get; set; }
     }

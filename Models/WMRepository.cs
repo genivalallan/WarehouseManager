@@ -6,11 +6,7 @@ namespace WarehouseManager.Models
     {
         private MySqlDbContext dbContext;
 
-        public WMRepository(MySqlDbContext context)
-        {
-            dbContext = context;
-            // dbContext.Database.EnsureCreated();
-        }
+        public WMRepository(MySqlDbContext context) => dbContext = context;
 
         public IQueryable<Client> Clients => dbContext.Clients;
         public IQueryable<Product> Products => dbContext.Products;
@@ -22,5 +18,11 @@ namespace WarehouseManager.Models
         public IQueryable<Enhancement> Enhancements => dbContext.Enhancements;
 
         public bool DbInit() => dbContext.Database.EnsureCreated();
+
+        public void Add(Client client)
+        {
+            dbContext.Clients.Add(client);
+            dbContext.SaveChanges();
+        }
     }
 }
