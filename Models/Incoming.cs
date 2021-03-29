@@ -25,7 +25,7 @@ namespace WarehouseManager.Models
         [Required]
         [ForeignKey("stock_id")]
         [Display(Name = "Destino")]
-        public virtual Stock Destination { get; set; }
+        public virtual Stock Product { get; set; }
 
         [Required]
         [ForeignKey("vehicle_id")]
