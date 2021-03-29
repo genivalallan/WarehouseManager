@@ -1,0 +1,45 @@
+@model IQueryable<Shipping>
+@{
+    ViewData["Title"] = "Lista de Saídas";
+    int counter = ((int)ViewData["page"] - 1) * (int)ViewData["listSize"];
+}
+
+    <h2>Lista de Saídas</h2>
+@if (Model.Count() == 0)
+{
+    <p>Nenhum item encontrado.</p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>Nº</th>
+            <th>Produto</th>
+            <th>Destino</th>
+            <th>Veículo</th>
+            <th>Motorista</th>
+            <th>Peso Bruto</th>
+            <th>Tara</th>
+            <th>Peso Líquido</th>
+            <th>Observações</th>
+            <th>Data/Hora</th>
+            <th>Status</th>
+        </tr>
+@foreach (var s in Model)
+{
+        <tr>
+            <td>@(++counter)</td>
+            <td>@s.Product.Product.Name</td>
+            <td>@s.Destination.Name</td>
+            <td>@s.Vehicle.Plate1</td>
+            <td>@s.Driver.Name</td>
+            <td>@s.GrossWeight</td>
+            <td>@s.VehicleTare</td>
+            <td>@s.NetWeight</td>
+            <td>@s.Description</td>
+            <td>@s.CreatedAt.ToString()</td>
+            <td>@s.Status.ToString()</td>
+        </tr>
+}
+    </table>
+}

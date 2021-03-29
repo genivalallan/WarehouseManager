@@ -1,0 +1,29 @@
+@model IQueryable<Client>
+@{
+    ViewData["Title"] = "Lista de Clientes";
+    int counter = ((int)ViewData["page"] - 1) * (int)ViewData["listSize"];
+}
+
+    <h2>Lista de Clientes</h2>
+@if (Model.Count() == 0)
+{
+    <p>Nenhum item encontrado.</p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>Nº</th>
+            <th>Nome</th>
+            <th>Endereço</th>
+        </tr>
+    @foreach (var c in Model)
+    {
+        <tr>
+            <td>@(++counter)</td>
+            <td>@c.Name</td>
+            <td>@c.Address</td>
+        </tr>
+    }
+    </table>
+}

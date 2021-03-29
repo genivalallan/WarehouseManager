@@ -1,0 +1,45 @@
+@model IQueryable<Incoming>
+@{
+    ViewData["Title"] = "Lista de Entradas";
+    int counter = ((int)ViewData["page"] - 1) * (int)ViewData["listSize"];
+}
+
+    <h2>Lista de Entradas</h2>
+@if (Model.Count() == 0)
+{
+    <p>Nenhum item encontrado.</p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>Nº</th>
+            <th>Origem</th>
+            <th>Produto</th>
+            <th>Veículo</th>
+            <th>Motorista</th>
+            <th>Peso Bruto</th>
+            <th>Tara</th>
+            <th>Peso Líquido</th>
+            <th>Observações</th>
+            <th>Data/Hora</th>
+            <th>Status</th>
+        </tr>
+@foreach (var i in Model)
+{
+        <tr>
+            <td>@(++counter)</td>
+            <td>@i.Origin.Name</td>
+            <td>@i.Product.Product.Name</td>
+            <td>@i.Vehicle.Plate1</td>
+            <td>@i.Driver.Name</td>
+            <td>@i.GrossWeight</td>
+            <td>@i.VehicleTare</td>
+            <td>@i.NetWeight</td>
+            <td>@i.Description</td>
+            <td>@i.CreatedAt.ToString()</td>
+            <td>@i.Status.ToString()</td>
+        </tr>
+}
+    </table>
+}
