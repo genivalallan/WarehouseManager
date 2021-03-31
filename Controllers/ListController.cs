@@ -11,36 +11,51 @@ namespace WarehouseManager.Controllers
         // TODO: Pagination feature
         // TODO: Redirect if page argument is out of range
         private readonly IWMRepository repository;
-        private int listSize = 5;
+        private int listSize = 10;
 
         public ListController(IWMRepository repo) => repository = repo;
 
         public IActionResult Clients(int page = 1)
         {
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             var clients = repository.Clients
             .OrderBy(c => c.ID)
             .Skip((page - 1) * listSize)
             .Take(listSize);
 
-            ViewData["listSize"] = listSize;
-            ViewData["page"] = page;
+            ViewBag.listSize = listSize;
+            ViewBag.page = page;
             return View(clients);
         }
 
         public IActionResult Products(int page = 1)
         {
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             var products = repository.Products
             .OrderBy(p => p.ID)
             .Skip((page - 1) * listSize)
             .Take(listSize);
 
-            ViewData["listSize"] = listSize;
-            ViewData["page"] = page;
+            ViewBag.listSize = listSize;
+            ViewBag.page = page;
             return View(products);
         }
 
         public IActionResult Stocks(int page = 1)
         {
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             var stocks = repository.Stocks
             .OrderBy(s => s.ID)
             .Skip((page - 1) * listSize)
@@ -48,8 +63,8 @@ namespace WarehouseManager.Controllers
             .Include(s => s.Product)
             .Include(s => s.Owner);
 
-            ViewData["listSize"] = listSize;
-            ViewData["page"] = page;
+            ViewBag.listSize = listSize;
+            ViewBag.page = page;
             return View(stocks);
         }
 
@@ -60,8 +75,8 @@ namespace WarehouseManager.Controllers
             .Skip((page - 1) * listSize)
             .Take(listSize);
 
-            ViewData["listSize"] = listSize;
-            ViewData["page"] = page;
+            ViewBag.listSize = listSize;
+            ViewBag.page = page;
             return View(drivers);
         }
 
@@ -72,8 +87,8 @@ namespace WarehouseManager.Controllers
             .Skip((page - 1) * listSize)
             .Take(listSize);
 
-            ViewData["listSize"] = listSize;
-            ViewData["page"] = page;
+            ViewBag.listSize = listSize;
+            ViewBag.page = page;
             return View(vehicles);
         }
 
@@ -83,13 +98,13 @@ namespace WarehouseManager.Controllers
             .OrderBy(i => i.ID)
             .Skip((page - 1) * listSize)
             .Take(listSize)
-            .Include(i => i.Origin)
-            .Include(i => i.Product)
+            .Include(i => i.Client)
+            .Include(i => i.Stock.Product)
             .Include(i => i.Vehicle)
             .Include(i => i.Driver);
 
-            ViewData["listSize"] = listSize;
-            ViewData["page"] = page;
+            ViewBag.listSize = listSize;
+            ViewBag.page = page;
             return View(incomings);
         }
 
@@ -99,13 +114,13 @@ namespace WarehouseManager.Controllers
             .OrderBy(s => s.ID)
             .Skip((page - 1) * listSize)
             .Take(listSize)
-            .Include(s => s.Product)
-            .Include(s => s.Destination)
+            .Include(i => i.Stock.Product)
+            .Include(s => s.Client)
             .Include(s => s.Vehicle)
             .Include(s => s.Driver);
 
-            ViewData["listSize"] = listSize;
-            ViewData["page"] = page;
+            ViewBag.listSize = listSize;
+            ViewBag.page = page;
             return View(shippings);
         }
 
@@ -115,13 +130,13 @@ namespace WarehouseManager.Controllers
             .OrderBy(e => e.ID)
             .Skip((page - 1) * listSize)
             .Take(listSize)
-            .Include(e => e.BaseProduct)
-            .Include(e => e.FinalProduct)
+            .Include(i => i.BaseStock.Product)
+            .Include(i => i.FinalStock.Product)
             .Include(e => e.Vehicle)
             .Include(e => e.Driver);
 
-            ViewData["listSize"] = listSize;
-            ViewData["page"] = page;
+            ViewBag.listSize = listSize;
+            ViewBag.page = page;
             return View(enhancements);
         }
     }

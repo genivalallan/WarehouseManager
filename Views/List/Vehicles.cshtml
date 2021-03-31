@@ -1,7 +1,7 @@
 @model IQueryable<Vehicle>
 @{
     ViewData["Title"] = "Lista de Veículos";
-    int counter = ((int)ViewData["page"] - 1) * (int)ViewData["listSize"];
+    int counter = (ViewBag.page - 1) * ViewBag.listSize;
 }
 
     <h2>Lista de Veículos</h2>
@@ -13,7 +13,7 @@ else
 {
     <table>
         <tr>
-            <th>Nº</th>
+            <th>#</th>
             <th>Placa do Cavalo</th>
             <th>Placa da Carreta</th>
             <th>Placa da Carreta</th>

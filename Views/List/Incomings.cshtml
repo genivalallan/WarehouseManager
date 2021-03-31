@@ -1,7 +1,7 @@
 @model IQueryable<Incoming>
 @{
     ViewData["Title"] = "Lista de Entradas";
-    int counter = ((int)ViewData["page"] - 1) * (int)ViewData["listSize"];
+    int counter = (ViewBag.page - 1) * ViewBag.listSize;
 }
 
     <h2>Lista de Entradas</h2>
@@ -13,9 +13,9 @@ else
 {
     <table>
         <tr>
-            <th>Nº</th>
+            <th>#</th>
             <th>Origem</th>
-            <th>Produto</th>
+            <th>Destino</th>
             <th>Veículo</th>
             <th>Motorista</th>
             <th>Peso Bruto</th>
@@ -29,16 +29,15 @@ else
 {
         <tr>
             <td>@(++counter)</td>
-            <td>@i.Origin.Name</td>
-            <td>@i.Product.Product.Name</td>
-            <td>@i.Vehicle.Plate1</td>
-            <td>@i.Driver.Name</td>
+            <td>@(i?.Client.Name ?? "<Sem Dados>")</td>
+            <td>@(i?.Stock?.Product.Name ?? "<Sem Dados>")</td>
+            <td>@(i?.Vehicle.Plate1 ?? "<Sem Dados>")</td>
+            <td>@(i?.Driver.Name ?? "<Sem Dados>")</td>
             <td>@i.GrossWeight</td>
-            <td>@i.VehicleTare</td>
+            <td>@i?.Vehicle.Tare</td>
             <td>@i.NetWeight</td>
-            <td>@i.Description</td>
+            <td>@i.Comment</td>
             <td>@i.CreatedAt.ToString()</td>
-            <td>@i.Status.ToString()</td>
         </tr>
 }
     </table>

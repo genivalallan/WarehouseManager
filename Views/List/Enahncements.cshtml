@@ -1,7 +1,7 @@
 @model IQueryable<Enhancement>
 @{
     ViewData["Title"] = "Lista de Processamentos";
-    int counter = ((int)ViewData["page"] - 1) * (int)ViewData["listSize"];
+    int counter = (ViewBag.page - 1) * ViewBag.listSize;
 }
 
     <h2>Lista de Processamentos</h2>
@@ -13,9 +13,9 @@ else
 {
     <table>
         <tr>
-            <th>Nº</th>
-            <th>Produto Base</th>
-            <th>Produto Final</th>
+            <th>#</th>
+            <th>Estoque Base</th>
+            <th>Estoque Final</th>
             <th>Veículo</th>
             <th>Motorista</th>
             <th>Peso Bruto</th>
@@ -29,16 +29,15 @@ else
 {
         <tr>
             <td>@(++counter)</td>
-            <td>@e.BaseProduct.Product.Name</td>
-            <td>@e.FinalProduct.Product.Name</td>
-            <td>@e.Vehicle.Plate1</td>
-            <td>@e.Driver.Name</td>
+            <td>@(e?.BaseStock?.Product.Name ?? "<Sem Dados>")</td>
+            <td>@(e?.FinalStock?.Product.Name ?? "<Sem Dados>")</td>
+            <td>@(e?.Vehicle.Plate1 ?? "<Sem Dados>")</td>
+            <td>@(e?.Driver.Name ?? "<Sem Dados>")</td>
             <td>@e.GrossWeight</td>
-            <td>@e.VehicleTare</td>
+            <td>@e?.Vehicle.Tare</td>
             <td>@e.NetWeight</td>
-            <td>@e.Description</td>
+            <td>@e.Comment</td>
             <td>@e.CreatedAt.ToString()</td>
-            <td>@e.Status.ToString()</td>
         </tr>
 }
     </table>
