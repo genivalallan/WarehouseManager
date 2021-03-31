@@ -13,7 +13,8 @@ namespace WarehouseManager.Models
         IQueryable<Shipping> Shippings { get; }
         IQueryable<Enhancement> Enhancements { get; }
 
-        public bool DbInit();
+        public bool DbInit(bool sample = false);
         public void Add(Client c);
+        public void Add(Incoming i);
     }
 }

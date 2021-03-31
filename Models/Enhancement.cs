@@ -11,59 +11,60 @@ namespace WarehouseManager.Models
         [Key]
         [BindNever]
         [Column("id")]
-        [Display(Name = "ID do Processamento")]
+        [Display(Name = "ID do Recibo do Processamento")]
         public int ID { get; set; }
 
         // [Required]
         // public User User { get; set; }
 
-        [Required]
-        [ForeignKey("stock_origin_id")]
-        [Display(Name = "Origem")]
-        public virtual Stock BaseProduct { get; set; }
+        [Required(ErrorMessage = "Selecione o estoque do produto base")]
+        [Column("base_stock_id")]
+        [ForeignKey("BaseStock")]
+        [Display(Name = "Produto Processado")]
+        public int BaseStockID { get; set; }
 
-        [Required]
-        [ForeignKey("stock_destination_id")]
-        [Display(Name = "Destino")]
-        public virtual Stock FinalProduct { get; set; }
+        [Required(ErrorMessage = "Selecione o estoque do produto final")]
+        [Column("final_stock_id")]
+        [ForeignKey("FinalStock")]
+        [Display(Name = "Produto Final")]
+        public int FinalStockID { get; set; }
 
-        [Required]
-        [ForeignKey("vehicle_id")]
+        [Required(ErrorMessage = "Selecione o veículo que realizou o transporte")]
+        [Column("vehicle_id")]
+        [ForeignKey("Vehicle")]
         [Display(Name = "Veículo")]
-        public virtual Vehicle Vehicle { get; set; }
+        public int VehicleID { get; set; }
 
-        [Required]
-        [ForeignKey("driver_id")]
+        [Required(ErrorMessage = "Selecione o motorista que realizou o transporte")]
+        [Column("driver_id")]
+        [ForeignKey("Driver")]
         [Display(Name = "Motorista")]
-        public virtual Driver Driver { get; set; }
+        public int DriverID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Insira o valor do peso bruto")]
         [Column("gross_wheight")]
         [Display(Name = "Peso Bruto")]
         public int GrossWeight { get; set; }
 
         [Required]
-        [Column("vehicle_tare")]
-        [Display(Name = "Tara do Veículo")]
-        public int VehicleTare { get; set; }
-
-        [Required]
+        [BindNever]
         [Column("net_weight")]
         [Display(Name = "Peso Líquido")]
         public int NetWeight { get; set; }
 
-        [Column("description", TypeName = "varchar(128)")]
+        [Column("comment")]
         [Display(Name = "Observação")]
-        public string Description { get; set; }
+        public string Comment { get; set; }
 
         [Required]
+        [BindNever]
         [Column("created_at")]
         [Display(Name = "Data e Hora do Processamento")]
         public DateTime CreatedAt { get; set; }
 
-        [Required]
-        [Column("status")]
-        [Display(Name = "Status do Processamento")]
-        public OpStatus Status { get; set; }
+        public virtual Stock BaseStock { get; set; }
+        public virtual Stock FinalStock { get; set; }
+        public virtual Vehicle Vehicle { get; set; }
+        public virtual Driver Driver { get; set; }
     }
 }

@@ -14,28 +14,30 @@ namespace WarehouseManager.Models
         [Display(Name = "ID do Veículo")]
         public int ID { get; set; }
 
-        [Required]
-        [Column("plate1", TypeName = "varchar(7)")]
-        [Display(Name = "Placa da Carreta")]
+        [Required(ErrorMessage = "Insira a placa do veículo")]
+        [Column("plate1")]
+        [Display(Name = "Placa do Cavalo")]
         public string Plate1 { get; set; }
 
-        [Column("plate2", TypeName = "varchar(7)")]
+        [Column("plate2")]
         [Display(Name = "Placa da Carreta")]
         public string Plate2 { get; set; }
 
-        [Column("plate3", TypeName = "varchar(7)")]
+        [Column("plate3")]
         [Display(Name = "Placa da Carreta")]
         public string Plate3 { get; set; }
 
-        [Column("rntrc", TypeName = "varchar(8)")]
+        [Column("rntrc")]
         [Display(Name = "RNTRC")]
         public string RNTRC { get; set; }
-        
-        [BindNever]
+
+        [Required(ErrorMessage = "Insira o valor da tara do veículo")]
+        [Column("tare")]
+        [Display(Name = "Tara")]
+        public int Tare { get; set; }
+
         public virtual ICollection<Incoming> Incomings { get; set; }
-        [BindNever]
         public virtual ICollection<Shipping> Shippings { get; set; }
-        [BindNever]
         public virtual ICollection<Enhancement> Enhancements { get; set; }
     }
 }

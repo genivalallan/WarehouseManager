@@ -17,53 +17,54 @@ namespace WarehouseManager.Models
         // [Required]
         // public User User { get; set; }
 
-        [Required]
-        [ForeignKey("client_id")]
+        [Required(ErrorMessage = "Selecione o cliente da origem do produto")]
+        [Column("client_id")]
+        [ForeignKey("Client")]
         [Display(Name = "Origem")]
-        public virtual Client Origin { get; set; }
+        public int ClientID { get; set; }
 
-        [Required]
-        [ForeignKey("stock_id")]
+        [Required(ErrorMessage = "Selecione o estoque de destino do produto")]
+        [Column("stock_id")]
+        [ForeignKey("Stock")]
         [Display(Name = "Destino")]
-        public virtual Stock Product { get; set; }
+        public int StockID { get; set; }
 
-        [Required]
-        [ForeignKey("vehicle_id")]
+        [Required(ErrorMessage = "Selecione o veículo que realizou o transporte")]
+        [Column("vehicle_id")]
+        [ForeignKey("Vehicle")]
         [Display(Name = "Veículo")]
-        public virtual Vehicle Vehicle { get; set; }
+        public int VehicleID { get; set; }
 
-        [Required]
-        [ForeignKey("driver_id")]
+        [Required(ErrorMessage = "Selecione o motorista que realizou o transporte")]
+        [Column("driver_id")]
+        [ForeignKey("Driver")]
         [Display(Name = "Motorista")]
-        public virtual Driver Driver { get; set; }
+        public int DriverID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Insira o valor do peso bruto")]
         [Column("gross_wheight")]
         [Display(Name = "Peso Bruto")]
         public int GrossWeight { get; set; }
 
         [Required]
-        [Column("vehicle_tare")]
-        [Display(Name = "Tara do Veículo")]
-        public int VehicleTare { get; set; }
-
-        [Required]
+        [BindNever]
         [Column("net_weight")]
         [Display(Name = "Peso Líquido")]
         public int NetWeight { get; set; }
 
-        [Column("description", TypeName = "varchar(128)")]
+        [Column("comment")]
         [Display(Name = "Observação")]
-        public string Description { get; set; }
+        public string Comment { get; set; }
 
         [Required]
+        [BindNever]
         [Column("created_at")]
         [Display(Name = "Data e Hora da Entrada")]
         public DateTime CreatedAt { get; set; }
 
-        [Required]
-        [Column("status")]
-        [Display(Name = "Status da Entrada")]
-        public OpStatus Status { get; set; }
+        public virtual Client Client { get; set; }
+        public virtual Stock Stock { get; set; }
+        public virtual Vehicle Vehicle { get; set; }
+        public virtual Driver Driver { get; set; }
     }
 }

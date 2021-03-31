@@ -14,20 +14,17 @@ namespace WarehouseManager.Models
         [Display(Name = "ID do Cliente")]
         public int ID { get; set; }
 
-        [Required]
-        [Column("name", TypeName = "varchar(32)")]
+        [Required(ErrorMessage = "Insira o nome do cliente")]
+        [Column("name")]
         [Display(Name = "Nome")]
         public string Name { get; set; }
 
-        [Column("address", TypeName = "varchar(64)")]
+        [Column("address")]
         [Display(Name = "Endereço")]
         public string Address { get; set; }
         
-        [BindNever]
         public virtual ICollection<Stock> Stocks { get; set; }
-        [BindNever]
         public virtual ICollection<Incoming> Incomings { get; set; }
-        [BindNever]
         public virtual ICollection<Shipping> Shippings { get; set; }
     }
 }

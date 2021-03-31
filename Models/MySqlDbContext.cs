@@ -29,8 +29,8 @@ namespace WarehouseManager.Models
 
             builder.Entity<Enhancement>(e =>
             {
-                e.HasOne(d => d.BaseProduct).WithMany(p => p.EnhancementBaseProducts);
-                e.HasOne(d => d.FinalProduct).WithMany(p => p.EnhancementFinalProducts);
+                e.HasOne(d => d.BaseStock).WithMany(p => p.EnhancementBaseStocks);
+                e.HasOne(d => d.FinalStock).WithMany(p => p.EnhancementFinalStocks);
             });
         }
     }
