@@ -10,6 +10,6 @@ namespace WarehouseManager.Controllers
 
         public AdminController(IWMRepository repo) => repository = repo;
 
-        public IActionResult DbInit() => View(repository.DbInit());
+        public IActionResult DbInit(string sample) => View(repository.DbInit(sample == "true"));
     }
 }
