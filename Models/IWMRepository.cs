@@ -14,7 +14,6 @@ namespace WarehouseManager.Models
         IQueryable<Enhancement> Enhancements { get; }
 
         public bool DbInit(bool sample = false);
-        public void Add(Client c);
-        public void Add(Incoming i);
+        public void Add<T>(T t);
     }
 }

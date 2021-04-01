@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WarehouseManager.Models
@@ -19,7 +21,7 @@ namespace WarehouseManager.Models
 
         public bool DbInit(bool sample = false)
         {
-            if(dbContext.Database.EnsureCreated())
+            if (dbContext.Database.EnsureCreated())
             {
                 if (sample)
                 {
@@ -31,15 +33,52 @@ namespace WarehouseManager.Models
             return false;
         }
 
-        public void Add(Client client)
+        public void Add<T>(T entity)
         {
-            dbContext.Clients.Add(client);
-            dbContext.SaveChanges();
-        }
+            switch (entity)
+            {
+                case Client client:
+                    dbContext.Clients.Add(client);
+                    break;
 
-        public void Add(Incoming incoming)
-        {
-            dbContext.Incomings.Add(incoming);
+                case Driver driver:
+                    dbContext.Drivers.Add(driver);
+                    break;
+
+                case Enhancement enhancement:
+                    enhancement.CreatedAt = DateTime.Now;
+                    enhancement.NetWeight = enhancement.GrossWeight - (dbContext.Vehicles?.Find(enhancement.VehicleID).Tare ?? 0);
+                    dbContext.Enhancements.Add(enhancement);
+                    break;
+
+                case Incoming incoming:
+                    incoming.CreatedAt = DateTime.Now;
+                    incoming.NetWeight = incoming.GrossWeight - (dbContext.Vehicles?.Find(incoming.VehicleID).Tare ?? 0);
+                    dbContext.Incomings.Add(incoming);
+                    break;
+
+                case Product product:
+                    dbContext.Products.Add(product);
+                    break;
+
+                case Shipping shipping:
+                    shipping.CreatedAt = DateTime.Now;
+                    shipping.NetWeight = shipping.GrossWeight - (dbContext.Vehicles?.Find(shipping.VehicleID).Tare ?? 0);
+                    dbContext.Shippings.Add(shipping);
+                    break;
+
+                case Stock stock:
+                    dbContext.Stocks.Add(stock);
+                    break;
+
+                case Vehicle vehicle:
+                    dbContext.Vehicles.Add(vehicle);
+                    break;
+
+                default:
+                    throw new ArgumentException($"WMRepository.Add<T>(T entity): The object of type {entity.GetType()} is not a valid entity.");
+            }
+
             dbContext.SaveChanges();
         }
     }
