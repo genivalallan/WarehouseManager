@@ -1,0 +1,20 @@
+@model Stock
+@{
+    ViewData["Title"] = "Criar Estoque";
+}
+
+<h2>Novo Estoque</h2>
+
+<form method="post" asp-action="Stock">
+    <div class="form-group">
+        <label asp-for="ProductID"></label>:
+        <input type="text" class="form-control" asp-for="ProductID">
+    </div>
+    <div class="form-group">
+        <label asp-for="ClientID"></label>:
+        <input type="text" class="form-control" asp-for="ClientID">
+    </div>
+    <div>
+        <button type="submit">Criar</button>
+    </div>
+</form>

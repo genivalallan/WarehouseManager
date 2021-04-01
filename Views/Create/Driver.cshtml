@@ -1,0 +1,20 @@
+@model Driver
+@{
+    ViewData["Title"] = "Adicionar Motorista";
+}
+
+<h2>Novo Motorista</h2>
+
+<form method="post" asp-action="Driver">
+    <div class="form-group">
+        <label asp-for="Name"></label>:
+        <input type="text" class="form-control" asp-for="Name">
+    </div>
+    <div class="form-group">
+        <label asp-for="CNH"></label>:
+        <input type="text" class="form-control" asp-for="CNH">
+    </div>
+    <div>
+        <button type="submit">Criar</button>
+    </div>
+</form>

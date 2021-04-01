@@ -1,0 +1,32 @@
+@model Vehicle
+@{
+    ViewData["Title"] = "Adicionar Veículo";
+}
+
+<h2>Novo Veículo</h2>
+
+<form method="post" asp-action="Vehicle">
+    <div class="form-group">
+        <label asp-for="Plate1"></label>:
+        <input type="text" class="form-control" asp-for="Plate1">
+    </div>
+    <div class="form-group">
+        <label asp-for="Plate2"></label>:
+        <input type="text" class="form-control" asp-for="Plate2">
+    </div>
+    <div class="form-group">
+        <label asp-for="Plate3"></label>:
+        <input type="text" class="form-control" asp-for="Plate3">
+    </div>
+    <div class="form-group">
+        <label asp-for="RNTRC"></label>:
+        <input type="text" class="form-control" asp-for="RNTRC">
+    </div>
+    <div class="form-group">
+        <label asp-for="Tare"></label>:
+        <input type="number" class="form-control" asp-for="Tare">
+    </div>
+    <div>
+        <button type="submit">Criar</button>
+    </div>
+</form>
