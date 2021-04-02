@@ -1,11 +1,11 @@
-@model IQueryable<Shipping>
+@model PagingListViewModel<Shipping>
 @{
     ViewData["Title"] = "Lista de Saídas";
-    int counter = (ViewBag.page - 1) * ViewBag.listSize;
+    int counter = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
 }
 
     <h2>Lista de Saídas</h2>
-@if (Model.Count() == 0)
+@if (Model.PagingInfo.TotalItems == 0)
 {
     <p>Nenhum item encontrado.</p>
 }
@@ -25,7 +25,7 @@ else
             <th>Data/Hora</th>
             <th>Status</th>
         </tr>
-@foreach (var s in Model)
+@foreach (var s in Model.Items)
 {
         <tr>
             <td>@(++counter)</td>
@@ -41,4 +41,5 @@ else
         </tr>
 }
     </table>
+    <div page-model="@Model.PagingInfo" page-action="Shippings"></div>
 }
