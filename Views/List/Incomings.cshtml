@@ -1,4 +1,4 @@
-@model PagingListViewModel<Incoming>
+@model ListViewModel<Incoming>
 @{
     ViewData["Title"] = "Lista de Entradas";
     int counter = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
