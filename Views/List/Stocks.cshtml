@@ -1,32 +1,10 @@
 @model ListViewModel<Stock>
 @{
     ViewData["Title"] = "Lista de Estoques";
-    int counter = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
+    ViewData["Entity"] = "Estoques";
+    ViewData["Action"] = "Stocks";
+    ViewData["Items"] = Model.Items;
+    ViewData["StartCounter"] = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
 }
 
-    <h2>Lista de Estoques</h2>
-@if (Model.PagingInfo.TotalItems == 0)
-{
-    <p>Nenhum item encontrado.</p>
-}
-else
-{
-    <table>
-        <tr>
-            <th>#</th>
-            <th>Produto</th>
-            <th>Proprietário</th>
-            <th>Saldo</th>
-        </tr>
-    @foreach (var s in Model.Items)
-    {
-        <tr>
-            <td>@(++counter)</td>
-            <td>@(s?.Product.Name ?? "<Sem Dados>")</td>
-            <td>@(s?.Owner.Name ?? "<Sem Dados>")</td>
-            <td>@s.Balance</td>
-        </tr>
-    }
-    </table>
-    <div page-model="@Model.PagingInfo" page-action="Stocks"></div>
-}
+<partial name="/Views/List/Layouts/_ListLayout.cshtml" for="PagingInfo" view-data="ViewData" />

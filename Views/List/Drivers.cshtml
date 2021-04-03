@@ -1,30 +1,10 @@
 @model ListViewModel<Driver>
 @{
     ViewData["Title"] = "Lista de Motoristas";
-    int counter = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
+    ViewData["Entity"] = "Motoristas";
+    ViewData["Action"] = "Drivers";
+    ViewData["Items"] = Model.Items;
+    ViewData["StartCounter"] = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
 }
 
-    <h2>Lista de Motoristas</h2>
-@if (Model.PagingInfo.TotalItems == 0)
-{
-    <p>Nenhum item encontrado.</p>
-}
-else
-{
-    <table>
-        <tr>
-            <th>#</th>
-            <th>Nome</th>
-            <th>CNH</th>
-        </tr>
-@foreach (var s in Model.Items)
-{
-        <tr>
-            <td>@(++counter)</td>
-            <td>@s.Name</td>
-            <td>@s.CNH</td>
-        </tr>
-}
-    </table>
-    <div page-model="@Model.PagingInfo" page-action="Drivers"></div>
-}
+<partial name="/Views/List/Layouts/_ListLayout.cshtml" for="PagingInfo" view-data="ViewData" />

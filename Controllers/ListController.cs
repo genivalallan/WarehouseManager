@@ -36,12 +36,13 @@ namespace WarehouseManager.Controllers
                 pagingInfo.Page = page;
             }
 
-            return View(new PagingListViewModel<Client>
+            return View(new ListViewModel<Client>
             {
                 Items = repository.Clients
                     .OrderBy(c => c.ID)
                     .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
-                    .Take(pagingInfo.ItemsPerPage),
+                    .Take(pagingInfo.ItemsPerPage)
+                    .AsNoTracking(),
                 PagingInfo = pagingInfo
             });
         }
@@ -68,12 +69,13 @@ namespace WarehouseManager.Controllers
                 pagingInfo.Page = page;
             }
 
-            return View(new PagingListViewModel<Product>
+            return View(new ListViewModel<Product>
             {
                 Items = repository.Products
                     .OrderBy(p => p.ID)
                     .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
-                    .Take(pagingInfo.ItemsPerPage),
+                    .Take(pagingInfo.ItemsPerPage)
+                    .AsNoTracking(),
                 PagingInfo = pagingInfo
             });
         }
@@ -100,14 +102,15 @@ namespace WarehouseManager.Controllers
                 pagingInfo.Page = page;
             }
 
-            return View(new PagingListViewModel<Stock>
+            return View(new ListViewModel<Stock>
             {
                 Items = repository.Stocks
                     .OrderBy(s => s.ID)
                     .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
                     .Take(pagingInfo.ItemsPerPage)
                     .Include(p => p.Product)
-                    .Include(c => c.Owner),
+                    .Include(c => c.Owner)
+                    .AsNoTracking(),
                 PagingInfo = pagingInfo
             });
         }
@@ -134,12 +137,13 @@ namespace WarehouseManager.Controllers
                 pagingInfo.Page = page;
             }
 
-            return View(new PagingListViewModel<Driver>
+            return View(new ListViewModel<Driver>
             {
                 Items = repository.Drivers
                     .OrderBy(d => d.ID)
                     .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
-                    .Take(pagingInfo.ItemsPerPage),
+                    .Take(pagingInfo.ItemsPerPage)
+                    .AsNoTracking(),
                 PagingInfo = pagingInfo
             });
         }
@@ -165,12 +169,13 @@ namespace WarehouseManager.Controllers
                 pagingInfo.Page = page;
             }
 
-            return View(new PagingListViewModel<Vehicle>
+            return View(new ListViewModel<Vehicle>
             {
                 Items = repository.Vehicles
                     .OrderBy(v => v.ID)
                     .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
-                    .Take(pagingInfo.ItemsPerPage),
+                    .Take(pagingInfo.ItemsPerPage)
+                    .AsNoTracking(),
                 PagingInfo = pagingInfo
             });
         }
@@ -196,7 +201,7 @@ namespace WarehouseManager.Controllers
                 pagingInfo.Page = page;
             }
 
-            return View(new PagingListViewModel<Incoming>
+            return View(new ListViewModel<Incoming>
             {
                 Items = repository.Incomings
                     .OrderBy(i => i.ID)
@@ -205,7 +210,8 @@ namespace WarehouseManager.Controllers
                     .Include(c => c.Client)
                     .Include(p => p.Stock.Product)
                     .Include(v => v.Vehicle)
-                    .Include(d => d.Driver),
+                    .Include(d => d.Driver)
+                    .AsNoTracking(),
                 PagingInfo = pagingInfo
             });
         }
@@ -231,7 +237,7 @@ namespace WarehouseManager.Controllers
                 pagingInfo.Page = page;
             }
 
-            return View(new PagingListViewModel<Shipping>
+            return View(new ListViewModel<Shipping>
             {
                 Items = repository.Shippings
                     .OrderBy(s => s.ID)
@@ -240,7 +246,8 @@ namespace WarehouseManager.Controllers
                     .Include(c => c.Client)
                     .Include(p => p.Stock.Product)
                     .Include(v => v.Vehicle)
-                    .Include(d => d.Driver),
+                    .Include(d => d.Driver)
+                    .AsNoTracking(),
                 PagingInfo = pagingInfo
             });
         }
@@ -266,7 +273,7 @@ namespace WarehouseManager.Controllers
                 pagingInfo.Page = page;
             }
 
-            return View(new PagingListViewModel<Enhancement>
+            return View(new ListViewModel<Enhancement>
             {
                 Items = repository.Enhancements
                     .OrderBy(e => e.ID)
@@ -275,7 +282,8 @@ namespace WarehouseManager.Controllers
                     .Include(p => p.BaseStock.Product)
                     .Include(p => p.FinalStock.Product)
                     .Include(v => v.Vehicle)
-                    .Include(d => d.Driver),
+                    .Include(d => d.Driver)
+                    .AsNoTracking(),
                 PagingInfo = pagingInfo
             });
         }

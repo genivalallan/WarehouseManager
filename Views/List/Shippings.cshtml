@@ -1,45 +1,10 @@
 @model ListViewModel<Shipping>
 @{
     ViewData["Title"] = "Lista de Saídas";
-    int counter = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
+    ViewData["Entity"] = "Saídas";
+    ViewData["Action"] = "Shippings";
+    ViewData["Items"] = Model.Items;
+    ViewData["StartCounter"] = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
 }
 
-    <h2>Lista de Saídas</h2>
-@if (Model.PagingInfo.TotalItems == 0)
-{
-    <p>Nenhum item encontrado.</p>
-}
-else
-{
-    <table>
-        <tr>
-            <th>#</th>
-            <th>Produto</th>
-            <th>Destino</th>
-            <th>Veículo</th>
-            <th>Motorista</th>
-            <th>Peso Bruto</th>
-            <th>Tara</th>
-            <th>Peso Líquido</th>
-            <th>Observações</th>
-            <th>Data/Hora</th>
-            <th>Status</th>
-        </tr>
-@foreach (var s in Model.Items)
-{
-        <tr>
-            <td>@(++counter)</td>
-            <td>@(s?.Stock?.Product.Name ?? "<Sem Dados>")</td>
-            <td>@(s?.Client.Name ?? "<Sem Dados>")</td>
-            <td>@(s?.Vehicle.Plate1 ?? "<Sem Dados>")</td>
-            <td>@(s?.Driver.Name ?? "<Sem Dados>")</td>
-            <td>@s.GrossWeight</td>
-            <td>@s?.Vehicle.Tare</td>
-            <td>@s.NetWeight</td>
-            <td>@s.Comment</td>
-            <td>@s.CreatedAt.ToString()</td>
-        </tr>
-}
-    </table>
-    <div page-model="@Model.PagingInfo" page-action="Shippings"></div>
-}
+<partial name="/Views/List/Layouts/_ListLayout.cshtml" for="PagingInfo" view-data="ViewData" />

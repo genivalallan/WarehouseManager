@@ -1,0 +1,50 @@
+@model PagingInfo
+<h2 class="border border-dark rounded bg-secondary text-white text-center">
+    Lista de @ViewData["Entity"]
+</h2>
+@if (Model.TotalItems == 0)
+{
+<div>
+    <p class="bg-dark bg-gradient text-white text-center">
+        Nenhum item encontrado.
+    </p>
+</div>
+}
+else
+{
+<table class="table table-bordered table-striped table-sm">
+@if (ViewData["Items"] is IEnumerable<Client>)
+{
+    <partial name="/Views/List/Layouts/_ListClients.cshtml" view-data="ViewData" />
+}
+else if (ViewData["Items"] is IEnumerable<Driver>)
+{
+    <partial name="/Views/List/Layouts/_ListDrivers.cshtml" view-data="ViewData" />
+}
+else if (ViewData["Items"] is IEnumerable<Enhancement>)
+{
+    <partial name="/Views/List/Layouts/_ListEnhancements.cshtml" view-data="ViewData" />
+}
+else if (ViewData["Items"] is IEnumerable<Incoming>)
+{
+    <partial name="/Views/List/Layouts/_ListIncomings.cshtml" view-data="ViewData" />
+}
+else if (ViewData["Items"] is IEnumerable<Product>)
+{
+    <partial name="/Views/List/Layouts/_ListProducts.cshtml" view-data="ViewData" />
+}
+else if (ViewData["Items"] is IEnumerable<Shipping>)
+{
+    <partial name="/Views/List/Layouts/_ListShippings.cshtml" view-data="ViewData" />
+}
+else if (ViewData["Items"] is IEnumerable<Stock>)
+{
+    <partial name="/Views/List/Layouts/_ListStocks.cshtml" view-data="ViewData" />
+}
+else if (ViewData["Items"] is IEnumerable<Vehicle>)
+{
+    <partial name="/Views/List/Layouts/_ListVehicles.cshtml" view-data="ViewData" />
+}
+    </table>
+        <partial name="_PagingButtons" view-data="ViewData" />
+}

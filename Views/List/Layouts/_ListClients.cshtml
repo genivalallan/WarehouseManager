@@ -1,0 +1,16 @@
+@{
+    int counter = (int)ViewData["StartCounter"] + 1;
+}
+    <tr>
+        <th>#</th>
+        <th>Nome</th>
+        <th>Endereço</th>
+    </tr>
+@foreach (var c in ViewData["Items"] as IEnumerable<Client>)
+{
+    <tr>
+        <td>@(counter++)</td>
+        <td>@c.Name</td>
+        <td>@c.Address</td>
+    </tr>
+}
