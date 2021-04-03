@@ -19,6 +19,11 @@ namespace WarehouseManager.Infrastructure
         public PagingInfo PageModel { get; set; }
         public string PageAction { get; set; }
 
+        // Styles properties
+        public bool PageClassesEnabled { get; set; }
+        public string PageClass { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected  { get; set; }
 
         public PageLinkTagHelper(IUrlHelperFactory helper) => urlHelperFactory = helper;
 
@@ -33,6 +38,12 @@ namespace WarehouseManager.Infrastructure
 
                 tag.Attributes["href"] = urlHelper.Action(PageAction, new { page = i });
                 tag.InnerHtml.Append(i.ToString());
+
+                if (PageClassesEnabled)
+                {
+                    tag.AddCssClass(PageClass);
+                    tag.AddCssClass(i == PageModel.Page ? PageClassSelected : PageClassNormal);
+                }
 
                 result.InnerHtml.AppendHtml(tag);
             }
