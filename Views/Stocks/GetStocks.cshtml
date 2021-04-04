@@ -2,9 +2,9 @@
 @{
     ViewData["Title"] = "Lista de Estoques";
     ViewData["Entity"] = "Estoques";
-    ViewData["Action"] = "Stocks";
+    ViewData["Controller"] = "stocks";
     ViewData["Items"] = Model.Items;
     ViewData["StartCounter"] = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
 }
 
-<partial name="/Views/List/Layouts/_ListLayout.cshtml" for="PagingInfo" view-data="ViewData" />
+<partial name="_ListLayout" for="PagingInfo" view-data="ViewData" />

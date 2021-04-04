@@ -18,6 +18,7 @@ namespace WarehouseManager.Infrastructure
         public ViewContext ViewContext { get; set; }
         public PagingInfo PageModel { get; set; }
         public string PageAction { get; set; }
+        public string PageController { get; set; }
 
         // Styles properties
         public bool PageClassesEnabled { get; set; }
@@ -36,7 +37,7 @@ namespace WarehouseManager.Infrastructure
             {
                 TagBuilder tag = new TagBuilder("a");
 
-                tag.Attributes["href"] = urlHelper.Action(PageAction, new { page = i });
+                tag.Attributes["href"] = urlHelper.Action(PageAction, PageController, (i == 1) ? null : new { page = i });
                 tag.InnerHtml.Append(i.ToString());
 
                 if (PageClassesEnabled)

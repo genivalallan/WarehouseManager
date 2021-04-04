@@ -20,6 +20,7 @@ namespace WarehouseManager
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddControllersWithViews();
             services.AddDbContext<MySqlDbContext>();
             services.AddScoped<IWMRepository, WMRepository>();
@@ -38,6 +39,7 @@ namespace WarehouseManager
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute();
             });
         }

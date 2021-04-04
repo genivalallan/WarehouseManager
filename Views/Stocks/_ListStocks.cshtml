@@ -1,0 +1,18 @@
+@{
+    int counter = (int)ViewData["StartCounter"] + 1;
+}
+    <tr>
+        <th>#</th>
+        <th>Produto</th>
+        <th>Proprietário</th>
+        <th>Saldo</th>
+    </tr>
+@foreach (var s in ViewData["Items"] as IEnumerable<Stock>)
+{
+    <tr>
+        <td>@(counter++)</td>
+        <td>@s.Product.Name</td>
+        <td>@s.Owner.Name</td>
+        <td>@s.Balance</td>
+    </tr>
+}

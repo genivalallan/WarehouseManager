@@ -2,9 +2,9 @@
 @{
     ViewData["Title"] = "Lista de Motoristas";
     ViewData["Entity"] = "Motoristas";
-    ViewData["Action"] = "Drivers";
+    ViewData["Controller"] = "drivers";
     ViewData["Items"] = Model.Items;
     ViewData["StartCounter"] = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
 }
 
-<partial name="/Views/List/Layouts/_ListLayout.cshtml" for="PagingInfo" view-data="ViewData" />
+<partial name="_ListLayout" for="PagingInfo" view-data="ViewData" />
