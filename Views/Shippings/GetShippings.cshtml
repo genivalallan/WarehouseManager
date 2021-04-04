@@ -1,10 +1,8 @@
-@model ListViewModel<Shipping>
+@model ListViewModel
 @{
     ViewData["Title"] = "Lista de Saídas";
     ViewData["Entity"] = "Saídas";
     ViewData["Controller"] = "shippings";
-    ViewData["Items"] = Model.Items;
-    ViewData["StartCounter"] = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
 }
 
-<partial name="_ListLayout" for="PagingInfo" view-data="ViewData" />
+<partial name="_ListLayout" view-data="ViewData" />

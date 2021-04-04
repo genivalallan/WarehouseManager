@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
+using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Controllers
 {
@@ -21,34 +23,19 @@ namespace WarehouseManager.Controllers
         [HttpGet]
         public IActionResult GetEnhancements()
         {
-            int page;
-            if (HttpContext.Request.Query["page"] == "" ||
-                !Int32.TryParse(HttpContext.Request.Query["page"], out page))
-            {
-                page = 1;
-            }
-
             IEnumerable<Enhancement> enhancements = null;
-            PagingInfo pagingInfo = null;
-            if (repository.Enhancements.Count() != 0)
+            PagingInfo pagingInfo = new PagingInfo()
+                .Create(repository.Enhancements.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+            
+            if (pagingInfo.TotalItems != 0)
             {
-                pagingInfo = new PagingInfo
-                {
-                    ItemsPerPage = itemsPerPage,
-                    TotalItems = repository.Enhancements.Count()
-                };
-
-                if (page < 1)
+                if (pagingInfo.Page < 1)
                 {
                     return Redirect("/enhancements");
                 }
-                else if (page > pagingInfo.TotalPages)
+                else if (pagingInfo.Page > pagingInfo.TotalPages)
                 {
                     return Redirect($"/enhancements?page={pagingInfo.TotalPages}");
-                }
-                else
-                {
-                    pagingInfo.Page = page;
                 }
 
                 enhancements = repository.Enhancements
@@ -62,9 +49,9 @@ namespace WarehouseManager.Controllers
                     .AsNoTracking();
             }
 
-            return View(new ListViewModel<Enhancement>
+            return View(new ListViewModel
             {
-                Items = enhancements,
+                JsonItems = JsonSerializer.Serialize(enhancements),
                 PagingInfo = pagingInfo
             });
         }

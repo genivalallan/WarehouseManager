@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 
 using WarehouseManager.Models;
+using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Models.ViewModels
 {
-    public class ListViewModel<T>
+    public class ListViewModel
     {
-        public IEnumerable<T> Items { get; set; }
+        public string JsonItems { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 }

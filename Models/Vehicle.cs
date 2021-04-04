@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -36,8 +37,11 @@ namespace WarehouseManager.Models
         [Display(Name = "Tara")]
         public int Tare { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Incoming> Incomings { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Shipping> Shippings { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Enhancement> Enhancements { get; set; }
     }
 }

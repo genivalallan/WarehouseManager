@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
+using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Controllers
 {
@@ -21,34 +23,19 @@ namespace WarehouseManager.Controllers
         [HttpGet]
         public IActionResult GetShippings()
         {
-            int page;
-            if (HttpContext.Request.Query["page"] == "" ||
-                !Int32.TryParse(HttpContext.Request.Query["page"], out page))
-            {
-                page = 1;
-            }
-
             IEnumerable<Shipping> shippings = null;
-            PagingInfo pagingInfo = null;
-            if (repository.Shippings.Count() != 0)
+            PagingInfo pagingInfo = new PagingInfo()
+                .Create(repository.Incomings.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+            
+            if (pagingInfo.TotalItems != 0)
             {
-                pagingInfo = new PagingInfo
-                {
-                    ItemsPerPage = itemsPerPage,
-                    TotalItems = repository.Shippings.Count()
-                };
-
-                if (page < 1)
+                if (pagingInfo.Page < 1)
                 {
                     return Redirect("/shippings");
                 }
-                else if (page > pagingInfo.TotalPages)
+                else if (pagingInfo.Page > pagingInfo.TotalPages)
                 {
                     return Redirect($"/shippings?page={pagingInfo.TotalPages}");
-                }
-                else
-                {
-                    pagingInfo.Page = page;
                 }
 
                 shippings = repository.Shippings
@@ -62,9 +49,9 @@ namespace WarehouseManager.Controllers
                     .AsNoTracking();
             }
 
-            return View(new ListViewModel<Shipping>
+            return View(new ListViewModel
             {
-                Items = shippings,
+                JsonItems = JsonSerializer.Serialize(shippings),
                 PagingInfo = pagingInfo
             });
         }

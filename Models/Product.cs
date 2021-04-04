@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,7 +23,8 @@ namespace WarehouseManager.Models
         [Column("description")]
         [Display(Name = "Descrição")]
         public string Description { get; set; }
-        
+
+        [JsonIgnore]
         public virtual ICollection<Stock> Stocks { get; set; }
     }
 }

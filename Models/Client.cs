@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,8 +24,11 @@ namespace WarehouseManager.Models
         [Display(Name = "Endereço")]
         public string Address { get; set; }
         
+        [JsonIgnore]
         public virtual ICollection<Stock> Stocks { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Incoming> Incomings { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Shipping> Shippings { get; set; }
     }
 }

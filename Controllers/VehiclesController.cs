@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
+using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Controllers
 {
@@ -21,34 +23,19 @@ namespace WarehouseManager.Controllers
         [HttpGet]
         public IActionResult GetVehicles()
         {
-            int page;
-            if (HttpContext.Request.Query["page"] == "" ||
-                !Int32.TryParse(HttpContext.Request.Query["page"], out page))
-            {
-                page = 1;
-            }
-
             IEnumerable<Vehicle> vehicles = null;
-            PagingInfo pagingInfo = null;
-            if (repository.Vehicles.Count() != 0)
+            PagingInfo pagingInfo = new PagingInfo()
+                .Create(repository.Vehicles.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+            
+            if (pagingInfo.TotalItems != 0)
             {
-                pagingInfo = new PagingInfo
-                {
-                    ItemsPerPage = itemsPerPage,
-                    TotalItems = repository.Vehicles.Count()
-                };
-
-                if (page < 1)
+                if (pagingInfo.Page < 1)
                 {
                     return Redirect("/vehicles");
                 }
-                else if (page > pagingInfo.TotalPages)
+                else if (pagingInfo.Page > pagingInfo.TotalPages)
                 {
                     return Redirect($"/vehicles?page={pagingInfo.TotalPages}");
-                }
-                else
-                {
-                    pagingInfo.Page = page;
                 }
 
                 vehicles = repository.Vehicles
@@ -58,9 +45,9 @@ namespace WarehouseManager.Controllers
                     .AsNoTracking();
             }
 
-            return View(new ListViewModel<Vehicle>
+            return View(new ListViewModel
             {
-                Items = vehicles,
+                JsonItems = JsonSerializer.Serialize(vehicles),
                 PagingInfo = pagingInfo
             });
         }

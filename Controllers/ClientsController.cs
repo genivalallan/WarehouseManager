@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
+using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Controllers
 {
@@ -21,34 +23,19 @@ namespace WarehouseManager.Controllers
         [HttpGet]
         public IActionResult GetClients()
         {
-            int page;
-            if (HttpContext.Request.Query["page"] == "" ||
-                !Int32.TryParse(HttpContext.Request.Query["page"], out page))
-            {
-                page = 1;
-            }
-
             IEnumerable<Client> clients = null;
-            PagingInfo pagingInfo = null;
-            if (repository.Clients.Count() != 0)
-            {
-                pagingInfo = new PagingInfo
-                {
-                    ItemsPerPage = itemsPerPage,
-                    TotalItems = repository.Clients.Count()
-                };
+            PagingInfo pagingInfo = new PagingInfo()
+                .Create(repository.Clients.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
 
-                if (page < 1)
+            if (pagingInfo.TotalItems != 0)
+            {
+                if (pagingInfo.Page < 1)
                 {
                     return Redirect("/clients");
                 }
-                else if (page > pagingInfo.TotalPages)
+                else if (pagingInfo.Page > pagingInfo.TotalPages)
                 {
                     return Redirect($"/clients?page={pagingInfo.TotalPages}");
-                }
-                else
-                {
-                    pagingInfo.Page = page;
                 }
 
                 clients = repository.Clients
@@ -58,11 +45,19 @@ namespace WarehouseManager.Controllers
                     .AsNoTracking();
             }
 
-            return View(new ListViewModel<Client>
+            return View(new ListViewModel
             {
-                Items = clients,
+                JsonItems = JsonSerializer.Serialize(clients),
                 PagingInfo = pagingInfo
             });
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetClient(int id)
+        {
+            Client client = repository.Clients.FirstOrDefault(c => c.ID == id);
+
+            return View(client);
         }
     }
 }

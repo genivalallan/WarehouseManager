@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
+using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Controllers
 {
@@ -21,34 +23,19 @@ namespace WarehouseManager.Controllers
         [HttpGet]
         public IActionResult GetDrivers()
         {
-            int page;
-            if (HttpContext.Request.Query["page"] == "" ||
-                !Int32.TryParse(HttpContext.Request.Query["page"], out page))
-            {
-                page = 1;
-            }
-
             IEnumerable<Driver> drivers = null;
-            PagingInfo pagingInfo = null;
-            if (repository.Drivers.Count() != 0)
-            {
-                pagingInfo = new PagingInfo
-                {
-                    ItemsPerPage = itemsPerPage,
-                    TotalItems = repository.Drivers.Count()
-                };
+            PagingInfo pagingInfo = new PagingInfo()
+                .Create(repository.Drivers.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
 
-                if (page < 1)
+            if (pagingInfo.TotalItems != 0)
+            {
+                if (pagingInfo.Page< 1)
                 {
                     return Redirect("/drivers");
                 }
-                else if (page > pagingInfo.TotalPages)
+                else if (pagingInfo.Page > pagingInfo.TotalPages)
                 {
                     return Redirect($"/drivers?page={pagingInfo.TotalPages}");
-                }
-                else
-                {
-                    pagingInfo.Page = page;
                 }
 
                 drivers = repository.Drivers
@@ -58,9 +45,9 @@ namespace WarehouseManager.Controllers
                     .AsNoTracking();
             }
 
-            return View(new ListViewModel<Driver>
+            return View(new ListViewModel
             {
-                Items = drivers,
+                JsonItems = JsonSerializer.Serialize(drivers),
                 PagingInfo = pagingInfo
             });
         }

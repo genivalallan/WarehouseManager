@@ -1,12 +1,15 @@
+@using System.Text.Json
+@model ListViewModel
 @{
-    int counter = (int)ViewData["StartCounter"] + 1;
+    int counter = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage + 1;
+    IEnumerable<Product> products = JsonSerializer.Deserialize<IEnumerable<Product>>(Model.JsonItems);
 }
     <tr>
         <th>#</th>
         <th>Nome</th>
         <th>Descrição</th>
     </tr>
-@foreach (var p in ViewData["Items"] as IEnumerable<Product>)
+@foreach (var p in products)
 {
     <tr>
         <td>@(counter++)</td>
