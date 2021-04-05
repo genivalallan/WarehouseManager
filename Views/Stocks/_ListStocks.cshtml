@@ -1,7 +1,7 @@
 @using System.Text.Json
 @model ListViewModel
 @{
-    int counter = (Model.PagingInfo.Page - 1) + Model.PagingInfo.ItemsPerPage + 1;
+    int counter = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage + 1;
     IEnumerable<Stock> stocks = JsonSerializer.Deserialize<IEnumerable<Stock>>(Model.JsonItems);
 }
     <tr>
