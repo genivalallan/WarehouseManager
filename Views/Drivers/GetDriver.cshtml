@@ -1,0 +1,27 @@
+@model Driver
+@{
+    ViewData["Title"] = "Detalhes do Motorista";
+}
+
+<h2>Motorista</h2>
+
+@if (Model == null)
+{
+<h4 class="alert alert-danger">Registro não encontrado.</h4>
+}
+else
+{
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="bg-dark text-white input-group-text" asp-for="Name"></label>
+  </div>
+  <input type="text" class="form-control" asp-for="Name" disabled>
+</div>
+
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="bg-dark text-white input-group-text" asp-for="CNH"></label>
+  </div>
+  <input type="text" class="form-control" asp-for="CNH" disabled>
+</div>
+}

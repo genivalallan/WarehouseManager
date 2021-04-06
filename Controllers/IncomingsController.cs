@@ -42,10 +42,10 @@ namespace WarehouseManager.Controllers
                     .OrderBy(i => i.ID)
                     .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
                     .Take(pagingInfo.ItemsPerPage)
-                    .Include(c => c.Client)
-                    .Include(s => s.Stock.Product)
-                    .Include(d => d.Driver)
-                    .Include(v => v.Vehicle)
+                    .Include(i => i.Client)
+                    .Include(i => i.Stock.Product)
+                    .Include(i => i.Driver)
+                    .Include(i => i.Vehicle)
                     .AsNoTracking();
             }
 
@@ -55,5 +55,15 @@ namespace WarehouseManager.Controllers
                 PagingInfo = pagingInfo
             });
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetIncoming(int id) =>
+            View(repository.Incomings
+                .Include(i => i.Client)
+                .Include(i => i.Stock.Product)
+                .Include(i => i.Driver)
+                .Include(i => i.Vehicle)
+                .AsNoTracking()
+                .FirstOrDefault(i => i.ID == id));
     }
 }

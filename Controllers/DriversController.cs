@@ -51,5 +51,9 @@ namespace WarehouseManager.Controllers
                 PagingInfo = pagingInfo
             });
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetDriver(int id) =>
+            View(repository.Drivers.FirstOrDefault(d => d.ID == id));
     }
 }

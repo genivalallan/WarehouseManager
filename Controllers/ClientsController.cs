@@ -53,11 +53,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetClient(int id)
-        {
-            Client client = repository.Clients.FirstOrDefault(c => c.ID == id);
-
-            return View(client);
-        }
+        public IActionResult GetClient(int id) =>
+            View(repository.Clients.FirstOrDefault(c => c.ID == id));
     }
 }

@@ -1,0 +1,27 @@
+@model Client
+@{
+    ViewData["Title"] = "Detalhes do Cliente";
+}
+
+<h2>Cliente</h2>
+
+@if (Model == null)
+{
+<h4 class="alert alert-danger">Registro não encontrado.</h4>
+}
+else
+{
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="bg-dark text-white input-group-text" asp-for="Name"></label>
+  </div>
+  <input type="text" class="form-control" asp-for="Name" disabled>
+</div>
+
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="bg-dark text-white input-group-text" asp-for="Address"></label>
+  </div>
+  <input type="text" class="form-control" asp-for="Address" disabled>
+</div>
+}

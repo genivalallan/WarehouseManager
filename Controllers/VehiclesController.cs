@@ -51,5 +51,9 @@ namespace WarehouseManager.Controllers
                 PagingInfo = pagingInfo
             });
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetVehicle(int id) =>
+            View(repository.Vehicles.FirstOrDefault(v => v.ID == id));
     }
 }

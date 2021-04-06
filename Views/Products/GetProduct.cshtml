@@ -1,0 +1,27 @@
+@model Product
+@{
+    ViewData["Title"] = "Detalhes do Produto";
+}
+
+<h2>Produto</h2>
+
+@if (Model == null)
+{
+<h4 class="alert alert-danger">Registro não encontrado.</h4>
+}
+else
+{
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="bg-dark text-white input-group-text" asp-for="Name"></label>
+  </div>
+  <input type="text" class="form-control" asp-for="Name" disabled>
+</div>
+
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="bg-dark text-white input-group-text" asp-for="Description"></label>
+  </div>
+  <input type="text" class="form-control" asp-for="Description" disabled>
+</div>
+}

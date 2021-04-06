@@ -1,0 +1,76 @@
+@model Enhancement
+@{
+    ViewData["Title"] = "Detalhes do Processamento";
+}
+
+<h2>Processamento</h2>
+
+@if (Model == null)
+{
+    <h4 class="alert alert-danger">Registro não encontrado.</h4>
+}
+else
+{
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="bg-dark text-white input-group-text">Produto Base</label>
+        </div>
+        <input type="text" class="form-control" asp-for="BaseStock.Product.Name" disabled>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="bg-dark text-white input-group-text">Produto Final</label>
+        </div>
+        <input type="text" class="form-control" asp-for="FinalStock.Product.Name" disabled>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="bg-dark text-white input-group-text">Placa do Veículo</label>
+        </div>
+        <input type="text" class="form-control" asp-for="Vehicle.Plate1" disabled>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="bg-dark text-white input-group-text">Motorista</label>
+        </div>
+        <input type="text" class="form-control" asp-for="Driver.Name" disabled>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="bg-dark text-white input-group-text" asp-for="GrossWeight"></label>
+        </div>
+        <input type="number" class="form-control" asp-for="GrossWeight" disabled>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="bg-dark text-white input-group-text" asp-for="Vehicle.Tare"></label>
+        </div>
+        <input type="number" class="form-control" asp-for="Vehicle.Tare" disabled>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="bg-dark text-white input-group-text" asp-for="NetWeight"></label>
+        </div>
+        <input type="text" class="form-control" asp-for="NetWeight" disabled>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="bg-dark text-white input-group-text" asp-for="CreatedAt"></label>
+        </div>
+        <input type="datetime" class="form-control" asp-for="CreatedAt" disabled>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="bg-dark text-white input-group-text" asp-for="Comment"></label>
+        </div>
+        <input type="text" class="form-control" asp-for="Comment" disabled>
+    </div>
+}

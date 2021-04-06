@@ -42,8 +42,8 @@ namespace WarehouseManager.Controllers
                     .OrderBy(s => s.ID)
                     .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
                     .Take(pagingInfo.ItemsPerPage)
-                    .Include(p => p.Product)
-                    .Include(c => c.Owner)
+                    .Include(s => s.Product)
+                    .Include(s => s.Owner)
                     .AsNoTracking();
             }
 
@@ -53,5 +53,13 @@ namespace WarehouseManager.Controllers
                 PagingInfo = pagingInfo
             });
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetStock(int id) =>
+            View(repository.Stocks
+                .Include(s => s.Owner)
+                .Include(s => s.Product)
+                .AsNoTracking()
+                .FirstOrDefault(s => s.ID == id));
     }
 }
