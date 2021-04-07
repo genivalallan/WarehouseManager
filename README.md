@@ -138,7 +138,7 @@ Edit the *appsettings.json* file in the project directory to insert the connecti
 Add the following line:  
 <img src="./assets/imgs/inserting-connection-string.png" alt="Inserting the connection string" width="910" height="291" />
 
-#### 3.4.3 Build and run the application
+### 3.5 Build and run the application
 
 To build the project, you need to add the MySql.EntityFrameworkCore package. Run the following command in the project directory:
 
@@ -164,6 +164,17 @@ You should be presented with the following output if everything is working:
 <img src="./assets/imgs/dotnet-run-output.png" alt="Dotnet run output" width="537" height="207" />
 
 See [MySql Connector/NET for Entity Framework](https://dev.mysql.com/doc/connector-net/en/connector-net-entity-framework.html) for more information.
+
+### 3.6 Known Issues
+
+#### 3.6.1 Dependencies Issues
+
+- Visual Studio Code may report problems related to dependecies issues with **Microsoft.EntityFrameworkCore** package.  
+  Try to run the following command in the project directory:
+
+```
+dotnet restore
+```
 
 ## 4. Contributing
 
