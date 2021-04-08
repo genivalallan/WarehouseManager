@@ -11,8 +11,6 @@ using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class VehiclesController : Controller
     {
         private readonly IWMRepository repository;
@@ -21,7 +19,7 @@ namespace WarehouseManager.Controllers
         public VehiclesController(IWMRepository repo) => repository = repo;
 
         [HttpGet]
-        public IActionResult GetVehicles()
+        public IActionResult List()
         {
             IEnumerable<Vehicle> vehicles = null;
             PagingInfo pagingInfo = new PagingInfo()
@@ -45,6 +43,10 @@ namespace WarehouseManager.Controllers
                     .AsNoTracking();
             }
 
+            ViewData["Title"] = "Lista de Veículos";
+            ViewData["Entity"] = "Veículos";
+            ViewData["Controller"] = "vehicles";
+            ViewData["Action"] = "list";
             return View(new ListViewModel
             {
                 JsonItems = JsonSerializer.Serialize(vehicles),
@@ -52,8 +54,11 @@ namespace WarehouseManager.Controllers
             });
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetVehicle(int id) =>
+        [HttpGet]
+        public IActionResult Details(int id) =>
             View(repository.Vehicles.FirstOrDefault(v => v.ID == id));
+
+        [HttpGet]
+        public IActionResult Create() => View();
     }
 }

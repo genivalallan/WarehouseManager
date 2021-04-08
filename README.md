@@ -140,7 +140,7 @@ Add the following line:
 
 ### 3.5 Build and run the application
 
-To build the project, you need to add the MySql.EntityFrameworkCore package. Run the following command in the project directory:
+To build the project, you need to add the *MySql.EntityFrameworkCore* package. Run the following command in the project directory:
 
 ```
 dotnet add package MySql.EntityFrameworkCore --version 5.0.0+m8.0.23
@@ -169,7 +169,7 @@ See [MySql Connector/NET for Entity Framework](https://dev.mysql.com/doc/connect
 
 #### 3.6.1 Dependencies Issues
 
-- Visual Studio Code may report problems related to dependecies issues with **Microsoft.EntityFrameworkCore** package.  
+- Visual Studio Code may report issues related to dependencies with **Microsoft.EntityFrameworkCore** package.  
   Try to run the following command in the project directory:
 
 ```

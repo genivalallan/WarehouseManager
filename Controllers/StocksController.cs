@@ -11,8 +11,6 @@ using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class StocksController : Controller
     {
         private readonly IWMRepository repository;
@@ -21,7 +19,7 @@ namespace WarehouseManager.Controllers
         public StocksController(IWMRepository repo) => repository = repo;
 
         [HttpGet]
-        public IActionResult GetStocks()
+        public IActionResult List()
         {
             IEnumerable<Stock> stocks = null;
             PagingInfo pagingInfo = new PagingInfo()
@@ -47,6 +45,10 @@ namespace WarehouseManager.Controllers
                     .AsNoTracking();
             }
 
+            ViewData["Title"] = "Lista de Estoques";
+            ViewData["Entity"] = "Estoques";
+            ViewData["Controller"] = "stocks";
+            ViewData["Action"] = "list";
             return View(new ListViewModel
             {
                 JsonItems = JsonSerializer.Serialize(stocks),
@@ -54,12 +56,15 @@ namespace WarehouseManager.Controllers
             });
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetStock(int id) =>
+        [HttpGet]
+        public IActionResult Details(int id) =>
             View(repository.Stocks
                 .Include(s => s.Owner)
                 .Include(s => s.Product)
                 .AsNoTracking()
                 .FirstOrDefault(s => s.ID == id));
+
+        [HttpGet]
+        public IActionResult Create() => View();
     }
 }

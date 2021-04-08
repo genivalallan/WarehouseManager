@@ -11,8 +11,6 @@ using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class EnhancementsController : Controller
     {
         private readonly IWMRepository repository;
@@ -21,7 +19,7 @@ namespace WarehouseManager.Controllers
         public EnhancementsController(IWMRepository repo) => repository = repo;
 
         [HttpGet]
-        public IActionResult GetEnhancements()
+        public IActionResult List()
         {
             IEnumerable<Enhancement> enhancements = null;
             PagingInfo pagingInfo = new PagingInfo()
@@ -49,6 +47,10 @@ namespace WarehouseManager.Controllers
                     .AsNoTracking();
             }
 
+            ViewData["Title"] = "Lista de Processamentos";
+            ViewData["Entity"] = "Processamentos";
+            ViewData["Controller"] = "enhancements";
+            ViewData["Action"] = "list";
             return View(new ListViewModel
             {
                 JsonItems = JsonSerializer.Serialize(enhancements),
@@ -56,8 +58,8 @@ namespace WarehouseManager.Controllers
             });
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetEnhancement(int id) =>
+        [HttpGet]
+        public IActionResult Details(int id) =>
             View(repository.Enhancements
                 .Include(e => e.BaseStock.Product)
                 .Include(e => e.FinalStock.Product)
@@ -65,5 +67,8 @@ namespace WarehouseManager.Controllers
                 .Include(e => e.Vehicle)
                 .AsNoTracking()
                 .FirstOrDefault(e => e.ID == id));
+
+        [HttpGet]
+        public IActionResult Create() => View();
     }
 }
