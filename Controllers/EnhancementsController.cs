@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
@@ -69,6 +70,49 @@ namespace WarehouseManager.Controllers
                 .FirstOrDefault(e => e.ID == id));
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Create()
+        {
+            PopulateDropDownLists();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Enhancement enhancement)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.Add(enhancement);
+                return RedirectToAction("List");
+            }
+
+            PopulateDropDownLists(
+                enhancement.BaseStockID,
+                enhancement.FinalStockID,
+                enhancement.DriverID,
+                enhancement.VehicleID
+            );
+            return View();
+        }
+
+        private void PopulateDropDownLists(
+            object selectedBaseStock = null,
+            object selectedFinalStock = null,
+            object selectedDriver = null,
+            object selectedVehicle = null
+        ){
+            var stocks = repository.Stocks
+                .Include(s => s.Owner)
+                .Include(s => s.Product)
+                .OrderBy(s => s.Product.Name)
+                .Select(s => new KeyValuePair<int, string>(s.ID, $"{s.Product.Name} - {s.Owner.Name}"));
+
+            var drivers = from d in repository.Drivers orderby d.Name select d;
+            var vehicles = from v in repository.Vehicles orderby v.Plate1 select v;
+
+            ViewBag.BaseStocksID = new SelectList(stocks, "Key", "Value", selectedBaseStock);
+            ViewBag.FinalStocksID = new SelectList(stocks, "Key", "Value", selectedFinalStock);
+            ViewBag.DriversID = new SelectList(drivers.AsNoTracking(), "ID", "Name", selectedDriver);
+            ViewBag.VehiclesID = new SelectList(vehicles.AsNoTracking(), "ID", "Plate1", selectedVehicle);
+        }
     }
 }

@@ -1,0 +1,60 @@
+@model Shipping
+@{
+    ViewData["Title"] = "Gerar Saída";
+}
+
+<h2>Nova Saída</h2>
+
+<form method="post" asp-action="Create">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Estoque de Saída</label>
+    </div>
+    <select asp-for="StockID" asp-items="ViewBag.StocksID" class="custom-select form-control">
+        <option value="">Selecione o estoque</option>
+    </select>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Cliente de Destino</label>
+    </div>
+    <select asp-for="ClientID" asp-items="ViewBag.ClientsID" class="custom-select form-control">
+        <option value="">Selecione o cliente</option>
+    </select>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Motorista</label>
+    </div>
+    <select asp-for="DriverID" asp-items="ViewBag.DriversID" class="custom-select form-control">
+        <option value="">Selecione o motorista</option>
+    </select>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Veículo</label>
+    </div>
+    <select asp-for="VehicleID" asp-items="ViewBag.VehiclesID" class="custom-select form-control">
+        <option value="">Selecione o veículo</option>
+    </select>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="GrossWeight"></label>
+    </div>
+    <input type="number" class="form-control" asp-for="GrossWeight">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Comment"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Comment">
+  </div>
+
+  <button type="submit" class="btn btn-success">Gerar</button>
+</form>

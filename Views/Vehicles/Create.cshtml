@@ -1,0 +1,45 @@
+@model Vehicle
+@{
+    ViewData["Title"] = "Adicionar Veículo";
+}
+
+<h2>Novo Veículo</h2>
+
+<form method="post" asp-action="Create">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Plate1"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Plate1">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Plate2"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Plate2">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Plate3"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Plate3">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="RNTRC"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="RNTRC">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Tare"></label>
+    </div>
+    <input type="number" class="form-control" asp-for="Tare">
+  </div>
+
+  <button type="submit" class="btn btn-success">Adicionar</button>
+</form>

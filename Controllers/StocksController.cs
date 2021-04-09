@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
@@ -65,6 +66,32 @@ namespace WarehouseManager.Controllers
                 .FirstOrDefault(s => s.ID == id));
 
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Create()
+        {
+            PopulateDropDownLists();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Stock stock)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.Add(stock);
+                return RedirectToAction("List");
+            }
+
+            PopulateDropDownLists(stock.ClientID, stock.ProductID);
+            return View();
+        }
+
+        private void PopulateDropDownLists(object selectdClient = null, object selectedProduct = null)
+        {
+            var clients = from c in repository.Clients orderby c.Name select c;
+            var products = from p in repository.Products orderby p.Name select p;
+
+            ViewBag.ClientsID = new SelectList(clients.AsNoTracking(), "ID", "Name", selectdClient);
+            ViewBag.ProductsID = new SelectList(products.AsNoTracking(), "ID", "Name", selectedProduct);
+        }
     }
 }

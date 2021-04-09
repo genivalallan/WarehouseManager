@@ -1,0 +1,24 @@
+@model Product
+@{
+    ViewData["Title"] = "Adicionar Produto";
+}
+
+<h2>Novo Produto</h2>
+
+<form method="post" asp-action="Create">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Name"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Name">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Description"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Description">
+  </div>
+
+  <button type="submit" class="btn btn-success">Adicionar</button>
+</form>

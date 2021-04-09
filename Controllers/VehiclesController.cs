@@ -60,5 +60,17 @@ namespace WarehouseManager.Controllers
 
         [HttpGet]
         public IActionResult Create() => View();
+
+        [HttpPost]
+        public IActionResult Create(Vehicle vehicle)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.Add(vehicle);
+                return RedirectToAction("List");
+            }
+
+            return View();
+        }
     }
 }

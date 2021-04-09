@@ -58,5 +58,17 @@ namespace WarehouseManager.Controllers
 
         [HttpGet]
         public IActionResult Create() => View();
+
+        [HttpPost]
+        public IActionResult Create(Client client)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.Add(client);
+                return RedirectToAction("List");
+            }
+
+            return View();
+        }
     }
 }

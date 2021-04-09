@@ -1,0 +1,28 @@
+@model Stock
+@{
+    ViewData["Title"] = "Criar Estoque";
+}
+
+<h2>Novo Estoque</h2>
+
+<form method="post" asp-action="Create">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Cliente</label>
+    </div>
+    <select asp-for="ClientID" asp-items="ViewBag.ClientsID" class="custom-select form-control">
+        <option value="">Selecione um cliente</option>
+    </select>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Produto</label>
+    </div>
+    <select asp-for="ProductID" asp-items="ViewBag.ProductsID" class="custom-select form-control">
+        <option value="">Selecione um produto</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-success">Adicionar</button>
+</form>
