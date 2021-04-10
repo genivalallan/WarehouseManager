@@ -76,7 +76,66 @@ namespace WarehouseManager.Models
                     break;
 
                 default:
-                    throw new ArgumentException($"WMRepository.Add<T>(T entity): The object of type {entity.GetType()} is not a valid entity.");
+                    throw new ArgumentException($"The object of type {entity.GetType()} is not a valid entity.");
+            }
+
+            dbContext.SaveChanges();
+        }
+
+        public void Update<T>(T entity)
+        {
+            switch (entity)
+            {
+                case Client client:
+                    if (!dbContext.Clients.Any(c => c.ID == client.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Clients.Update(client);
+                    break;
+
+                case Driver driver:
+                    if(!dbContext.Drivers.Any(d => d.ID == driver.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Drivers.Update(driver);
+                    break;
+
+                case Product product:
+                    if (!dbContext.Products.Any(d => d.ID == product.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Products.Update(product);
+                    break;
+
+                case Vehicle vehicle:
+                    if (!dbContext.Vehicles.Any(d => d.ID == vehicle.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Vehicles.Update(vehicle);
+                    break;
+
+                case Enhancement e:
+                    break;
+
+                case Incoming i:
+                    break;
+
+                case Shipping s:
+                    break;
+
+                case Stock s:
+                    break;
+
+                default:
+                    throw new ArgumentException($"The object of type {entity.GetType()} is not a valid entity.");
             }
 
             dbContext.SaveChanges();

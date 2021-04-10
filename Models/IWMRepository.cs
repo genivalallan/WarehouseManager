@@ -15,5 +15,6 @@ namespace WarehouseManager.Models
 
         public bool DbInit(bool sample = false);
         public void Add<T>(T t);
+        public void Update<T>(T t);
     }
 }
