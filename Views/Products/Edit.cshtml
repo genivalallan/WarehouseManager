@@ -1,0 +1,32 @@
+@model Product
+@{
+    ViewData["Title"] = "Detalhes do Produto";
+}
+
+<h2>Editar Produto</h2>
+
+@if (Model == null)
+{
+<h4 class="alert alert-danger">Registro não encontrado.</h4>
+}
+else
+{
+<form method="post" asp-action="Edit">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Name"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Name">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Description"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Description">
+  </div>
+
+  <button type="submit" asp-route-id="@Model.ID" class="btn btn-success">Salvar</button>
+  <a asp-action="" class="btn btn-info">Voltar</a>
+</form>
+}

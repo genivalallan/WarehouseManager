@@ -53,6 +53,7 @@ namespace WarehouseManager.Controllers
             });
         }
 
+        [HttpGet]
         public IActionResult Details(int id) =>
             View(repository.Clients.FirstOrDefault(c => c.ID == id));
 
@@ -65,6 +66,24 @@ namespace WarehouseManager.Controllers
             if (ModelState.IsValid)
             {
                 repository.Add(client);
+                return RedirectToAction("List");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id) =>
+            View(repository.Clients.FirstOrDefault(c => c.ID == id));
+
+        [HttpPost]
+        public IActionResult Edit(int id, [FromForm]Client client)
+        {
+            if (ModelState.IsValid &&
+                repository.Clients.Any(c => c.ID == id))
+            {
+                client.ID = id;
+                repository.Update(client);
                 return RedirectToAction("List");
             }
 

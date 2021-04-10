@@ -72,5 +72,23 @@ namespace WarehouseManager.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id) =>
+            View(repository.Vehicles.FirstOrDefault(c => c.ID == id));
+
+        [HttpPost]
+        public IActionResult Edit(int id, [FromForm]Vehicle vehicle)
+        {
+            if (ModelState.IsValid &&
+                repository.Vehicles.Any(v => v.ID == id))
+            {
+                vehicle.ID = id;
+                repository.Update(vehicle);
+                return RedirectToAction("List");
+            }
+
+            return View();
+        }
     }
 }

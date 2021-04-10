@@ -72,5 +72,23 @@ namespace WarehouseManager.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id) =>
+            View(repository.Products.FirstOrDefault(c => c.ID == id));
+
+        [HttpPost]
+        public IActionResult Edit(int id, [FromForm]Product product)
+        {
+            if (ModelState.IsValid &&
+                repository.Products.Any(p => p.ID == id))
+            {
+                product.ID = id;
+                repository.Update(product);
+                return RedirectToAction("List");
+            }
+
+            return View();
+        }
     }
 }

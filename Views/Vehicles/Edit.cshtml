@@ -1,0 +1,53 @@
+@model Vehicle
+@{
+    ViewData["Title"] = "Detalhes do Veículo";
+}
+
+<h2>Editar Veículo</h2>
+
+@if (Model == null)
+{
+<h4 class="alert alert-danger">Registro não encontrado.</h4>
+}
+else
+{
+<form method="post" asp-action="Edit">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Plate1"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Plate1">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Plate2"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Plate2">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Plate3"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="Plate3">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="RNTRC"></label>
+    </div>
+    <input type="text" class="form-control" asp-for="RNTRC">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Tare"></label>
+    </div>
+    <input type="number" class="form-control" asp-for="Tare">
+  </div>
+
+  <button type="submit" asp-route-id="@Model.ID" class="btn btn-success">Salvar</button>
+  <a asp-action="" class="btn btn-info">Voltar</a>
+</form>
+}
