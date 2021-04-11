@@ -89,5 +89,23 @@ namespace WarehouseManager.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id) =>
+            View(repository.Clients.FirstOrDefault(c => c.ID == id));
+
+        [HttpPost]
+        public IActionResult Delete(int id, Client client)
+        {
+            if (!repository.Clients.Any(c => c.ID == id))
+            {
+                return View();
+            }
+
+            client.ID = id;
+            repository.Delete(client);
+
+            return RedirectToAction("List");
+        }
     }
 }

@@ -1,0 +1,44 @@
+@model Stock
+@{
+    ViewData["Title"] = "Remover Estoque";
+}
+
+<h2>Remover Estoque</h2>
+
+@if (Model == null)
+{
+<h4 class="alert alert-danger">Registro não encontrado.</h4>
+}
+else
+{
+<form method="post" asp-action="Delete">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Proprietário</label>
+    </div>
+    <input type="text" class="form-control" asp-for="Owner.Name" disabled>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Produto</label>
+    </div>
+    <input type="text" class="form-control" asp-for="Product.Name" disabled>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Balance"></label>
+    </div>
+    <input type="number" class="form-control" asp-for="Balance" disabled>
+  </div>
+
+  <div class="alert alert-danger text-center">
+    <h4 class="alert-heading">DESEJA REMOVER ESTE REGISTRO?</h4>
+    <p>Esta ação não poderá ser desfeita!</p>
+  </div>
+
+  <a asp-action="" class="btn btn-info">Voltar</a>
+  <button type="submit" asp-action="Delete" asp-route-id="@Model.ID" class="btn btn-danger">REMOVER!</button>
+</form>
+}

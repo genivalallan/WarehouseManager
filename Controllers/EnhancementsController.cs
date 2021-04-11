@@ -94,6 +94,29 @@ namespace WarehouseManager.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Delete(int id) =>
+            View(repository.Enhancements
+                .Include(e => e.BaseStock.Product)
+                .Include(e => e.FinalStock.Product)
+                .Include(e => e.Driver)
+                .Include(e => e.Vehicle)
+                .FirstOrDefault(e => e.ID == id));
+
+        [HttpPost]
+        public IActionResult Delete(int id, Enhancement enhancement)
+        {
+            if (!repository.Enhancements.Any(e => e.ID == id))
+            {
+                return View();
+            }
+
+            enhancement.ID = id;
+            repository.Delete(enhancement);
+
+            return RedirectToAction("List");
+        }
+
         private void PopulateDropDownLists(
             object selectedBaseStock = null,
             object selectedFinalStock = null,

@@ -90,5 +90,23 @@ namespace WarehouseManager.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id) =>
+            View(repository.Vehicles.FirstOrDefault(v => v.ID == id));
+
+        [HttpPost]
+        public IActionResult Delete(int id, Vehicle vehicle)
+        {
+            if (!repository.Vehicles.Any(v => v.ID == id))
+            {
+                return View();
+            }
+
+            vehicle.ID = id;
+            repository.Delete(vehicle);
+
+            return RedirectToAction("List");
+        }
     }
 }

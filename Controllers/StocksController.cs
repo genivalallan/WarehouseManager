@@ -85,6 +85,27 @@ namespace WarehouseManager.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Delete(int id) =>
+            View(repository.Stocks
+                .Include(s => s.Owner)
+                .Include(s => s.Product)
+                .FirstOrDefault(s => s.ID == id));
+
+        [HttpPost]
+        public IActionResult Delete(int id, Stock stock)
+        {
+            if (!repository.Stocks.Any(s => s.ID == id))
+            {
+                return View();
+            }
+
+            stock.ID = id;
+            repository.Delete(stock);
+
+            return RedirectToAction("List");
+        }
+
         private void PopulateDropDownLists(object selectdClient = null, object selectedProduct = null)
         {
             var clients = from c in repository.Clients orderby c.Name select c;

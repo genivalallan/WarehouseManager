@@ -90,5 +90,23 @@ namespace WarehouseManager.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Delete(int id) =>
+            View(repository.Drivers.FirstOrDefault(d => d.ID == id));
+
+        [HttpPost]
+        public IActionResult Delete(int id, Driver driver)
+        {
+            if (!repository.Drivers.Any(d => d.ID == id))
+            {
+                return View();
+            }
+
+            driver.ID = id;
+            repository.Delete(driver);
+
+            return RedirectToAction("List");
+        }
     }
 }

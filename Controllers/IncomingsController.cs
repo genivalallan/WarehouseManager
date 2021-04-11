@@ -94,6 +94,29 @@ namespace WarehouseManager.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Delete(int id) =>
+            View(repository.Incomings
+                .Include(i => i.Client)
+                .Include(i => i.Stock.Product)
+                .Include(i => i.Driver)
+                .Include(i => i.Vehicle)
+                .FirstOrDefault(i => i.ID == id));
+
+        [HttpPost]
+        public IActionResult Delete(int id, Incoming incoming)
+        {
+            if (!repository.Incomings.Any(i => i.ID == id))
+            {
+                return View();
+            }
+
+            incoming.ID = id;
+            repository.Delete(incoming);
+
+            return RedirectToAction("List");
+        }
+
         private void PopulateDropDownLists(
             object selectedClient = null,
             object selectedStock = null,

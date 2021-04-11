@@ -24,7 +24,7 @@ namespace WarehouseManager.Controllers
         {
             IEnumerable<Shipping> shippings = null;
             PagingInfo pagingInfo = new PagingInfo()
-                .Create(repository.Incomings.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+                .Create(repository.Shippings.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
             
             if (pagingInfo.TotalItems != 0)
             {
@@ -92,6 +92,29 @@ namespace WarehouseManager.Controllers
                 shipping.VehicleID
             );
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id) =>
+            View(repository.Shippings
+                .Include(s => s.Client)
+                .Include(s => s.Stock.Product)
+                .Include(s => s.Driver)
+                .Include(s => s.Vehicle)
+                .FirstOrDefault(s => s.ID == id));
+
+        [HttpPost]
+        public IActionResult Delete(int id, Shipping shipping)
+        {
+            if (!repository.Shippings.Any(s => s.ID == id))
+            {
+                return View();
+            }
+
+            shipping.ID = id;
+            repository.Delete(shipping);
+
+            return RedirectToAction("List");
         }
 
         private void PopulateDropDownLists(
