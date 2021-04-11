@@ -140,6 +140,89 @@ namespace WarehouseManager.Models
 
             dbContext.SaveChanges();
         }
+
+        public void Delete<T>(T entity)
+        {
+            switch (entity)
+            {
+                case Client client:
+                    if (!dbContext.Clients.Any(c => c.ID == client.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Clients.Remove(client);
+                    break;
+                
+                case Driver driver:
+                    if (!dbContext.Drivers.Any(c => c.ID == driver.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Drivers.Remove(driver);
+                    break;
+                
+                case Enhancement enhancement:
+                    if (!dbContext.Enhancements.Any(c => c.ID == enhancement.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Enhancements.Remove(enhancement);
+                    break;
+                
+                case Incoming incoming:
+                    if (!dbContext.Incomings.Any(c => c.ID == incoming.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Incomings.Remove(incoming);
+                    break;
+                
+                case Product product:
+                    if (!dbContext.Products.Any(c => c.ID == product.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Products.Remove(product);
+                    break;
+                
+                case Shipping shipping:
+                    if (!dbContext.Shippings.Any(c => c.ID == shipping.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Shippings.Remove(shipping);
+                    break;
+                
+                case Stock stock:
+                    if (!dbContext.Stocks.Any(c => c.ID == stock.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Stocks.Remove(stock);
+                    break;
+                
+                case Vehicle vehicle:
+                    if (!dbContext.Vehicles.Any(c => c.ID == vehicle.ID))
+                    {
+                        throw new ArgumentException("Invalid object reference");
+                    }
+
+                    dbContext.Vehicles.Remove(vehicle);
+                    break;
+                
+                default:
+                    throw new ArgumentException($"The object of type {entity.GetType()} is not a valid entity.");
+            }
+
+            dbContext.SaveChanges();
+        }
     }
 
     public static class WMDbSample
