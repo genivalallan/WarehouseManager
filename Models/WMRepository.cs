@@ -33,7 +33,7 @@ namespace WarehouseManager.Models
             return false;
         }
 
-        public void Add<T>(T entity)
+        public void Create<T>(T entity)
         {
             switch (entity)
             {

@@ -77,7 +77,7 @@ namespace WarehouseManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                repository.Add(stock);
+                repository.Create(stock);
                 return RedirectToAction("List");
             }
 
