@@ -46,15 +46,38 @@ namespace WarehouseManager.Models
                     break;
 
                 case Enhancement enhancement:
+                    Stock baseStock = dbContext.Stocks.Find(enhancement.BaseStockID);
+                    Stock finalStock = dbContext.Stocks.Find(enhancement.FinalStockID);
+
+                    if (baseStock == null || finalStock == null)
+                    {
+                        throw new ArgumentException("No object found");
+                    }
+
                     enhancement.CreatedAt = DateTime.Now;
                     enhancement.NetWeight = enhancement.GrossWeight - (dbContext.Vehicles?.Find(enhancement.VehicleID).Tare ?? 0);
+                    baseStock.Balance -= enhancement.NetWeight;
+                    finalStock.Balance += enhancement.NetWeight;
+
                     dbContext.Enhancements.Add(enhancement);
+                    dbContext.Stocks.Update(baseStock);
+                    dbContext.Stocks.Update(finalStock);
                     break;
 
                 case Incoming incoming:
+                    Stock incomingStock = dbContext.Stocks.Find(incoming.StockID);
+
+                    if (incomingStock == null)
+                    {
+                        throw new ArgumentException("No object found");
+                    }
+
                     incoming.CreatedAt = DateTime.Now;
                     incoming.NetWeight = incoming.GrossWeight - (dbContext.Vehicles?.Find(incoming.VehicleID).Tare ?? 0);
+                    incomingStock.Balance += incoming.NetWeight;
+
                     dbContext.Incomings.Add(incoming);
+                    dbContext.Stocks.Update(incomingStock);
                     break;
 
                 case Product product:
@@ -62,9 +85,19 @@ namespace WarehouseManager.Models
                     break;
 
                 case Shipping shipping:
+                    Stock shippingStock = dbContext.Stocks.Find(shipping.StockID);
+
+                    if (shippingStock == null)
+                    {
+                        throw new ArgumentException("No object found");
+                    }
+
                     shipping.CreatedAt = DateTime.Now;
                     shipping.NetWeight = shipping.GrossWeight - (dbContext.Vehicles?.Find(shipping.VehicleID).Tare ?? 0);
+                    shippingStock.Balance -= shipping.NetWeight;
+
                     dbContext.Shippings.Add(shipping);
+                    dbContext.Stocks.Update(shippingStock);
                     break;
 
                 case Stock stock:
