@@ -8,6 +8,7 @@
         <th>#</th>
         <th>Nome</th>
         <th>CNH</th>
+        <th>Opções</th>
     </tr>
 @foreach (var d in drivers)
 {
@@ -15,5 +16,10 @@
         <td>@(counter++)</td>
         <td>@d.Name</td>
         <td>@d.CNH</td>
+        <td>
+            <a asp-action="Details" asp-route-id="@d.ID" class="btn btn-info">Detalhes</a>
+            <a asp-action="Edit" asp-route-id="@d.ID" class="btn btn-success">Editar</a>
+            <a asp-action="Delete" asp-route-id="@d.ID" class="btn btn-danger">Remover</a>
+        </td>
     </tr>
 }

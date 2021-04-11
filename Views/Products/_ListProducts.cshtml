@@ -8,6 +8,7 @@
         <th>#</th>
         <th>Nome</th>
         <th>Descrição</th>
+        <th>Opões</th>
     </tr>
 @foreach (var p in products)
 {
@@ -15,5 +16,10 @@
         <td>@(counter++)</td>
         <td>@p.Name</td>
         <td>@p.Description</td>
+        <td>
+            <a asp-action="Details" asp-route-id="@p.ID" class="btn btn-info">Detalhes</a>
+            <a asp-action="Edit" asp-route-id="@p.ID" class="btn btn-success">Editar</a>
+            <a asp-action="Delete" asp-route-id="@p.ID" class="btn btn-danger">Remover</a>
+        </td>
     </tr>
 }

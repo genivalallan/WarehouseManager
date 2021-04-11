@@ -11,6 +11,7 @@
         <th>Placa da Carreta</th>
         <th>RNTRC</th>
         <th>Tara</th>
+        <th>Opções</th>
     </tr>
 @foreach (var v in vehicles)
 {
@@ -21,5 +22,10 @@
         <td>@v.Plate3</td>
         <td>@v.RNTRC</td>
         <td>@v.Tare</td>
+        <td>
+            <a asp-action="Details" asp-route-id="@v.ID" class="btn btn-info">Detalhes</a>
+            <a asp-action="Edit" asp-route-id="@v.ID" class="btn btn-success">Editar</a>
+            <a asp-action="Delete" asp-route-id="@v.ID" class="btn btn-danger">Remover</a>
+        </td>
     </tr>
 }

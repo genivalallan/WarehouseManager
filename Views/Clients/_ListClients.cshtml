@@ -8,6 +8,7 @@
                 <th>#</th>
                 <th>Nome</th>
                 <th>Endereço</th>
+                <th>Opções</th>
             </tr>
 @foreach (var c in clients)
 {
@@ -15,5 +16,10 @@
                 <td>@(counter++)</td>
                 <td>@c.Name</td>
                 <td>@c.Address</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@c.ID" class="btn btn-info">Detalhes</a>
+                    <a asp-action="Edit" asp-route-id="@c.ID" class="btn btn-success">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@c.ID" class="btn btn-danger">Remover</a>
+                </td>
             </tr>
 }

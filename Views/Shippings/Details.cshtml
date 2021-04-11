@@ -11,66 +11,69 @@
 }
 else
 {
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="bg-dark text-white input-group-text">Cliente de Destino</label>
-        </div>
-        <input type="text" class="form-control" asp-for="Client.Name" disabled>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Cliente de Destino</label>
     </div>
+    <input type="text" class="form-control" asp-for="Client.Name" disabled>
+  </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="bg-dark text-white input-group-text">Produto</label>
-        </div>
-        <input type="text" class="form-control" asp-for="Stock.Product.Name" disabled>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Produto</label>
     </div>
+    <input type="text" class="form-control" asp-for="Stock.Product.Name" disabled>
+  </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="bg-dark text-white input-group-text">Placa do Veículo</label>
-        </div>
-        <input type="text" class="form-control" asp-for="Vehicle.Plate1" disabled>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Placa do Veículo</label>
     </div>
+    <input type="text" class="form-control" asp-for="Vehicle.Plate1" disabled>
+  </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="bg-dark text-white input-group-text">Motorista</label>
-        </div>
-        <input type="text" class="form-control" asp-for="Driver.Name" disabled>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text">Motorista</label>
     </div>
+    <input type="text" class="form-control" asp-for="Driver.Name" disabled>
+  </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="bg-dark text-white input-group-text" asp-for="GrossWeight"></label>
-        </div>
-        <input type="number" class="form-control" asp-for="GrossWeight" disabled>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="GrossWeight"></label>
     </div>
+    <input type="number" class="form-control" asp-for="GrossWeight" disabled>
+  </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="bg-dark text-white input-group-text" asp-for="Vehicle.Tare"></label>
-        </div>
-        <input type="number" class="form-control" asp-for="Vehicle.Tare" disabled>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Vehicle.Tare"></label>
     </div>
+    <input type="number" class="form-control" asp-for="Vehicle.Tare" disabled>
+  </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="bg-dark text-white input-group-text" asp-for="NetWeight"></label>
-        </div>
-        <input type="text" class="form-control" asp-for="NetWeight" disabled>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="NetWeight"></label>
     </div>
+    <input type="text" class="form-control" asp-for="NetWeight" disabled>
+  </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="bg-dark text-white input-group-text" asp-for="CreatedAt"></label>
-        </div>
-        <input type="datetime" class="form-control" asp-for="CreatedAt" disabled>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="CreatedAt"></label>
     </div>
+    <input type="datetime" class="form-control" asp-for="CreatedAt" disabled>
+  </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="bg-dark text-white input-group-text" asp-for="Comment"></label>
-        </div>
-        <input type="text" class="form-control" asp-for="Comment" disabled>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="bg-dark text-white input-group-text" asp-for="Comment"></label>
     </div>
+    <input type="text" class="form-control" asp-for="Comment" disabled>
+  </div>
+  
+<a asp-action="" class="btn btn-info">Voltar</a>
+<a asp-action="Delete" asp-route-id="@Model.ID" class="btn btn-danger">Remover</a>
 }

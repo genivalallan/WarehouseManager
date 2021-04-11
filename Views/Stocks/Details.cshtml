@@ -31,4 +31,7 @@ else
   </div>
   <input type="number" class="form-control" asp-for="Balance" disabled>
 </div>
+
+<a asp-action="" class="btn btn-info">Voltar</a>
+<a asp-action="Delete" asp-route-id="@Model.ID" class="btn btn-danger">Remover</a>
 }

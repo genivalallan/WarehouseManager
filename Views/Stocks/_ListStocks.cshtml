@@ -9,6 +9,7 @@
         <th>Produto</th>
         <th>Proprietário</th>
         <th>Saldo</th>
+        <th>Opções</th>
     </tr>
 @foreach (var s in stocks)
 {
@@ -17,5 +18,9 @@
         <td>@s.Product.Name</td>
         <td>@s.Owner.Name</td>
         <td>@s.Balance</td>
+        <td>
+            <a asp-action="Details" asp-route-id="@s.ID" class="btn btn-info">Detalhes</a>
+            <a asp-action="Delete" asp-route-id="@s.ID" class="btn btn-danger">Remover</a>
+        </td>
     </tr>
 }

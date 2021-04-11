@@ -8,13 +8,14 @@
         <th>#</th>
         <th>Produto Base</th>
         <th>Produto Final</th>
-        <th>Veículo</th>
+        @* <th>Veículo</th>
         <th>Motorista</th>
         <th>Peso Bruto</th>
-        <th>Tara</th>
+        <th>Tara</th> *@
         <th>Peso Líquido</th>
         <th>Criado Em</th>
-        <th>Observação</th>
+        @* <th>Observação</th> *@
+        <th>Opções</th>
     </tr>
 @foreach (var e in enhancements)
 {
@@ -22,12 +23,16 @@
         <td>@(counter++)</td>
         <td>@e.BaseStock.Product.Name</td>
         <td>@e.FinalStock.Product.Name</td>
-        <td>@e.Vehicle.Plate1</td>
+        @* <td>@e.Vehicle.Plate1</td>
         <td>@e.Driver.Name</td>
         <td>@e.GrossWeight</td>
-        <td>@e.Vehicle.Tare</td>
+        <td>@e.Vehicle.Tare</td> *@
         <td>@e.NetWeight</td>
         <td>@e.CreatedAt</td>
-        <td>@e.Comment</td>
+        @* <td>@e.Comment</td> *@
+        <td>
+            <a asp-action="Details" asp-route-id="@e.ID" class="btn btn-info">Detalhes</a>
+            <a asp-action="Delete" asp-route-id="@e.ID" class="btn btn-danger">Remover</a>
+        </td>
     </tr>
 }
