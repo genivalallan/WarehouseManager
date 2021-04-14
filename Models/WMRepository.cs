@@ -33,227 +33,221 @@ namespace WarehouseManager.Models
             return false;
         }
 
-        public void Create<T>(T entity)
+        public void Create(Client c)
         {
-            switch (entity)
-            {
-                case Client client:
-                    dbContext.Clients.Add(client);
-                    break;
-
-                case Driver driver:
-                    dbContext.Drivers.Add(driver);
-                    break;
-
-                case Enhancement enhancement:
-                    Stock baseStock = dbContext.Stocks.Find(enhancement.BaseStockID);
-                    Stock finalStock = dbContext.Stocks.Find(enhancement.FinalStockID);
-
-                    if (baseStock == null || finalStock == null)
-                    {
-                        throw new ArgumentException("No object found");
-                    }
-
-                    enhancement.CreatedAt = DateTime.Now;
-                    enhancement.NetWeight = enhancement.GrossWeight - (dbContext.Vehicles?.Find(enhancement.VehicleID).Tare ?? 0);
-                    baseStock.Balance -= enhancement.NetWeight;
-                    finalStock.Balance += enhancement.NetWeight;
-
-                    dbContext.Enhancements.Add(enhancement);
-                    dbContext.Stocks.Update(baseStock);
-                    dbContext.Stocks.Update(finalStock);
-                    break;
-
-                case Incoming incoming:
-                    Stock incomingStock = dbContext.Stocks.Find(incoming.StockID);
-
-                    if (incomingStock == null)
-                    {
-                        throw new ArgumentException("No object found");
-                    }
-
-                    incoming.CreatedAt = DateTime.Now;
-                    incoming.NetWeight = incoming.GrossWeight - (dbContext.Vehicles?.Find(incoming.VehicleID).Tare ?? 0);
-                    incomingStock.Balance += incoming.NetWeight;
-
-                    dbContext.Incomings.Add(incoming);
-                    dbContext.Stocks.Update(incomingStock);
-                    break;
-
-                case Product product:
-                    dbContext.Products.Add(product);
-                    break;
-
-                case Shipping shipping:
-                    Stock shippingStock = dbContext.Stocks.Find(shipping.StockID);
-
-                    if (shippingStock == null)
-                    {
-                        throw new ArgumentException("No object found");
-                    }
-
-                    shipping.CreatedAt = DateTime.Now;
-                    shipping.NetWeight = shipping.GrossWeight - (dbContext.Vehicles?.Find(shipping.VehicleID).Tare ?? 0);
-                    shippingStock.Balance -= shipping.NetWeight;
-
-                    dbContext.Shippings.Add(shipping);
-                    dbContext.Stocks.Update(shippingStock);
-                    break;
-
-                case Stock stock:
-                    dbContext.Stocks.Add(stock);
-                    break;
-
-                case Vehicle vehicle:
-                    dbContext.Vehicles.Add(vehicle);
-                    break;
-
-                default:
-                    throw new ArgumentException($"The object of type {entity.GetType()} is not a valid entity.");
-            }
-
+            dbContext.Clients.Add(c);
             dbContext.SaveChanges();
         }
 
-        public void Update<T>(T entity)
+        public void Create(Driver d)
         {
-            switch (entity)
-            {
-                case Client client:
-                    if (!dbContext.Clients.Any(c => c.ID == client.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Clients.Update(client);
-                    break;
-
-                case Driver driver:
-                    if(!dbContext.Drivers.Any(d => d.ID == driver.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Drivers.Update(driver);
-                    break;
-
-                case Product product:
-                    if (!dbContext.Products.Any(d => d.ID == product.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Products.Update(product);
-                    break;
-
-                case Vehicle vehicle:
-                    if (!dbContext.Vehicles.Any(d => d.ID == vehicle.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Vehicles.Update(vehicle);
-                    break;
-
-                case Enhancement e:
-                    break;
-
-                case Incoming i:
-                    break;
-
-                case Shipping s:
-                    break;
-
-                case Stock s:
-                    break;
-
-                default:
-                    throw new ArgumentException($"The object of type {entity.GetType()} is not a valid entity.");
-            }
-
+            dbContext.Drivers.Add(d);
             dbContext.SaveChanges();
         }
 
-        public void Delete<T>(T entity)
+        public void Create(Enhancement e)
         {
-            switch (entity)
+            bool invalidReference = false;
+
+            Stock baseStock = dbContext.Stocks.Find(e.BaseStockID);
+            if (baseStock == null) invalidReference = true;
+
+            Stock finalStock = dbContext.Stocks.Find(e.FinalStockID);
+            if (finalStock == null) invalidReference = true;
+
+            Vehicle vehicle = dbContext.Vehicles.Find(e.VehicleID);
+            if (vehicle == null) invalidReference = true;
+
+            if (invalidReference)
             {
-                case Client client:
-                    if (!dbContext.Clients.Any(c => c.ID == client.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Clients.Remove(client);
-                    break;
-                
-                case Driver driver:
-                    if (!dbContext.Drivers.Any(c => c.ID == driver.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Drivers.Remove(driver);
-                    break;
-                
-                case Enhancement enhancement:
-                    if (!dbContext.Enhancements.Any(c => c.ID == enhancement.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Enhancements.Remove(enhancement);
-                    break;
-                
-                case Incoming incoming:
-                    if (!dbContext.Incomings.Any(c => c.ID == incoming.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Incomings.Remove(incoming);
-                    break;
-                
-                case Product product:
-                    if (!dbContext.Products.Any(c => c.ID == product.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Products.Remove(product);
-                    break;
-                
-                case Shipping shipping:
-                    if (!dbContext.Shippings.Any(c => c.ID == shipping.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Shippings.Remove(shipping);
-                    break;
-                
-                case Stock stock:
-                    if (!dbContext.Stocks.Any(c => c.ID == stock.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Stocks.Remove(stock);
-                    break;
-                
-                case Vehicle vehicle:
-                    if (!dbContext.Vehicles.Any(c => c.ID == vehicle.ID))
-                    {
-                        throw new ArgumentException("Invalid object reference");
-                    }
-
-                    dbContext.Vehicles.Remove(vehicle);
-                    break;
-                
-                default:
-                    throw new ArgumentException($"The object of type {entity.GetType()} is not a valid entity.");
+                throw new ArgumentException("Invalid foreign key reference.");
             }
 
+            if (vehicle.Tare > e.GrossWeight)
+            {
+                throw new ArgumentException("Vehicle tare greater than gross weight.");
+            }
+
+            e.CreatedAt = DateTime.Now;
+            e.NetWeight = e.GrossWeight - vehicle.Tare;
+            baseStock.Balance -= e.NetWeight;
+            finalStock.Balance += e.NetWeight;
+
+            dbContext.Enhancements.Add(e);
+            dbContext.Stocks.Update(baseStock);
+            dbContext.Stocks.Update(finalStock);
+            dbContext.SaveChanges();
+        }
+
+        public void Create(Incoming i)
+        {
+            bool invalidReference = false;
+
+            Stock stock = dbContext.Stocks.Find(i.StockID);
+            if (stock == null) invalidReference = true;
+
+            Vehicle vehicle = dbContext.Vehicles.Find(i.VehicleID);
+            if (vehicle == null) invalidReference = true;
+
+            if (invalidReference)
+            {
+                throw new ArgumentException("Invalid foreign key reference.");
+            }
+
+            if (vehicle.Tare > i.GrossWeight)
+            {
+                throw new ArgumentException("Vehicle tare greater than gross weight.");
+            }
+
+            i.CreatedAt = DateTime.Now;
+            i.NetWeight = i.GrossWeight - vehicle.Tare;
+            stock.Balance += i.NetWeight;
+
+            dbContext.Incomings.Add(i);
+            dbContext.Stocks.Update(stock);
+            dbContext.SaveChanges();
+        }
+
+        public void Create(Product p)
+        {
+            dbContext.Products.Add(p);
+            dbContext.SaveChanges();
+        }
+
+        public void Create(Shipping s)
+        {
+            bool invalidReference = false;
+
+            Stock stock = dbContext.Stocks.Find(s.StockID);
+            if (stock == null) invalidReference = true;
+
+            Vehicle vehicle = dbContext.Vehicles.Find(s.VehicleID);
+            if (vehicle == null) invalidReference = true;
+
+            if (invalidReference)
+            {
+                throw new ArgumentException("Invalid foreign key reference.");
+            }
+
+            if (vehicle.Tare > s.GrossWeight)
+            {
+                throw new ArgumentException("Vehicle tare greater than gross weight.");
+            }
+
+            s.CreatedAt = DateTime.Now;
+            s.NetWeight = s.GrossWeight - vehicle.Tare;
+            stock.Balance -= s.NetWeight;
+
+            dbContext.Shippings.Add(s);
+            dbContext.Stocks.Update(stock);
+            dbContext.SaveChanges();
+        }
+
+        public void Create(Stock s)
+        {
+            dbContext.Stocks.Add(s);
+            dbContext.SaveChanges();
+        }
+
+        public void Create(Vehicle v)
+        {
+            dbContext.Vehicles.Add(v);
+            dbContext.SaveChanges();
+        }
+
+        public void Update(Client c)
+        {
+            dbContext.Clients.Update(c);
+            dbContext.SaveChanges();
+        }
+
+        public void Update(Driver d)
+        {
+            dbContext.Drivers.Update(d);
+            dbContext.SaveChanges();
+        }
+
+        public void Update(Enhancement e)
+        {
+            dbContext.Enhancements.Update(e);
+            dbContext.SaveChanges();
+        }
+
+        public void Update(Incoming i)
+        {
+            dbContext.Incomings.Update(i);
+            dbContext.SaveChanges();
+        }
+
+        public void Update(Product p)
+        {
+            dbContext.Products.Update(p);
+            dbContext.SaveChanges();
+        }
+
+        public void Update(Shipping s)
+        {
+            dbContext.Shippings.Update(s);
+            dbContext.SaveChanges();
+        }
+
+        public void Update(Stock s)
+        {
+            dbContext.Stocks.Update(s);
+            dbContext.SaveChanges();
+        }
+
+        public void Update(Vehicle v)
+        {
+            dbContext.Vehicles.Update(v);
+            dbContext.SaveChanges();
+        }
+
+        public void Delete(Client c)
+        {
+            dbContext.Clients.Remove(c);
+            dbContext.SaveChanges();
+        }
+
+        public void Delete(Driver d)
+        {
+            dbContext.Drivers.Remove(d);
+            dbContext.SaveChanges();
+        }
+
+        public void Delete(Enhancement e)
+        {
+            dbContext.Enhancements.Remove(e);
+            dbContext.SaveChanges();
+        }
+
+        public void Delete(Incoming i)
+        {
+            dbContext.Incomings.Remove(i);
+            dbContext.SaveChanges();
+        }
+
+        public void Delete(Product p)
+        {
+            dbContext.Products.Remove(p);
+            dbContext.SaveChanges();
+        }
+
+        public void Delete(Shipping s)
+        {
+            dbContext.Shippings.Remove(s);
+            dbContext.SaveChanges();
+        }
+
+        public void Delete(Stock s)
+        {
+            dbContext.Stocks.Remove(s);
+            dbContext.SaveChanges();
+        }
+
+        public void Delete(Vehicle v)
+        {
+            dbContext.Vehicles.Remove(v);
             dbContext.SaveChanges();
         }
     }
