@@ -27,13 +27,10 @@ namespace WarehouseManager.Controllers
             
             if (pagingInfo.TotalItems != 0)
             {
-                if (pagingInfo.Page < 1)
+                if (pagingInfo.Page < 1 ||
+                    pagingInfo.Page > pagingInfo.TotalPages)
                 {
-                    return Redirect("/vehicles");
-                }
-                else if (pagingInfo.Page > pagingInfo.TotalPages)
-                {
-                    return Redirect($"/vehicles?page={pagingInfo.TotalPages}");
+                    return NotFound();
                 }
 
                 vehicles = repository.Vehicles
