@@ -9,23 +9,20 @@ namespace WarehouseManager.Infrastructure
         public int Page { get; set; }
         public int TotalPages =>
             (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
-    }
 
-    public static class PagingInfoExtension
-    {
-        public static PagingInfo Create(this PagingInfo p, int totalItems, int itemsPerPage, string query)
+        public PagingInfo() {}
+
+        public PagingInfo(int totalItems, int itemsPerPage, string pageQuery)
         {
-            if (query == "" ||
-                !Int32.TryParse(query, out int page))
+            if (pageQuery == "" ||
+                !Int32.TryParse(pageQuery, out int page))
             {
                 page = 1;
             }
 
-            p.TotalItems = totalItems;
-            p.ItemsPerPage = itemsPerPage;
-            p.Page = page;
-
-            return p;
+            TotalItems = totalItems;
+            ItemsPerPage = itemsPerPage;
+            Page = page;
         }
     }
 }

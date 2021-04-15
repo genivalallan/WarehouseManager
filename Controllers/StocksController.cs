@@ -23,8 +23,8 @@ namespace WarehouseManager.Controllers
         public IActionResult List()
         {
             IEnumerable<Stock> stocks = null;
-            PagingInfo pagingInfo = new PagingInfo()
-                .Create(repository.Stocks.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+            PagingInfo pagingInfo = new PagingInfo(
+                repository.Stocks.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
             
             if (pagingInfo.TotalItems != 0)
             {

@@ -22,8 +22,8 @@ namespace WarehouseManager.Controllers
         public IActionResult List()
         {
             IEnumerable<Driver> drivers = null;
-            PagingInfo pagingInfo = new PagingInfo()
-                .Create(repository.Drivers.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+            PagingInfo pagingInfo = new PagingInfo(
+                repository.Drivers.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
 
             if (pagingInfo.TotalItems != 0)
             {

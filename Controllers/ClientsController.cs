@@ -22,8 +22,8 @@ namespace WarehouseManager.Controllers
         public IActionResult List()
         {
             IEnumerable<Client> clients = null;
-            PagingInfo pagingInfo = new PagingInfo()
-                .Create(repository.Clients.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+            PagingInfo pagingInfo = new PagingInfo(
+                repository.Clients.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
 
             if (pagingInfo.TotalItems != 0)
             {
