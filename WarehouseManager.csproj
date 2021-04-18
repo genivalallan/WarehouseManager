@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>f4baf80f-d280-437d-8591-0507540d35bd</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.0+m8.0.23" />
