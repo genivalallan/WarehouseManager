@@ -7,7 +7,7 @@ ARG db_user=root
 ARG db_password
 ARG db_name=warehouse
 
-ENV MYSQL_CONNECTION_STRING=server=${db_host};port=${db_port};database=${db_name};user=${db_user};password=${db_password}
+ENV ASPNETCORE_DB_CONN_STRING=server=${db_host};port=${db_port};database=${db_name};user=${db_user};password=${db_password}
 
 COPY *.csproj ./
 RUN dotnet restore

@@ -11,7 +11,7 @@ services:
         db_password: ${DB_PASSWORD}
         db_name: ${DB_NAME}
     environment:
-      - MYSQL_CONNECTION_STRING=server=${DB_HOST};port=${DB_PORT};database=${DB_NAME};user=${DB_USER};password=${DB_PASSWORD}
+      - ASPNETCORE_DB_CONN_STRING=server=${DB_HOST};port=${DB_PORT};database=${DB_NAME};user=${DB_USER};password=${DB_PASSWORD}
     volumes:
       - .:/app
     ports:
