@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -20,7 +21,7 @@ namespace WarehouseManager.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            builder.UseMySQL(configuration["MySqlConnectionString"]);
+            builder.UseMySQL(configuration["DB_CONN_STRING"]);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -512,3 +512,6 @@ FodyWeavers.xsd
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore,csharp,vscode,linux
+
+# Env Vars
+.env

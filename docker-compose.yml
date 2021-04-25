@@ -1,0 +1,28 @@
+version: "3.4"
+services:
+  web:
+    build:
+      context: .
+      target: development
+      args:
+        db_host: ${DB_HOST}
+        db_port: ${DB_PORT}
+        db_user: ${DB_USER}
+        db_password: ${DB_PASSWORD}
+        db_name: ${DB_NAME}
+    environment:
+      - ASPNETCORE_DB_CONN_STRING=server=${DB_HOST};port=${DB_PORT};database=${DB_NAME};user=${DB_USER};password=${DB_PASSWORD}
+    volumes:
+      - .:/app
+    ports:
+      - ${APP_PORT}:5000
+  database:
+    image: mysql:8
+    volumes:
+      - database:/var/lib/mysql
+    ports:
+      - ${DB_PORT}:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+volumes:
+  database:
