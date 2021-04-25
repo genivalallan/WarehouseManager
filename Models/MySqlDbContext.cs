@@ -21,7 +21,7 @@ namespace WarehouseManager.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            builder.UseMySQL(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING"));
+            builder.UseMySQL(configuration["DB_CONN_STRING"]);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
