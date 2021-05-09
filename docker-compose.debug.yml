@@ -31,12 +31,11 @@ services:
   mysql:
     image: mysql:8
     volumes: 
-      - MySqlVol:/var/lib/mysql
+      - MySqlData:/var/lib/mysql
     ports:
       - ${DB_HOST_PORT}:3306
     environment: 
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
 
 volumes: 
-  MySqlVol:
-    name: MySqlData
+  MySqlData:
