@@ -2,8 +2,7 @@
 
 ### ***THIS PROJECT IS UNDER DEVELOPMENT***
 
-This project is intended to be used to manage bulk ore stocks using MySql database through a web server running on a LAN.  
-I'll try to design the application so that it can be used as well as a simple general purpose warehouse manager with a few modifications.
+This project is intended to be used to manage bulk ore stocks using MySql database through a web server running on a LAN.
 
 This project provides functionalities for a companie that stocks, processes and transports bulk ore owned by third parties and must register informations related to the incomings, shippings, processing and balance of the products of each client, tax data as well as other informations related to the transportation like vehicles and drivers.
 
@@ -53,10 +52,12 @@ You need the *Docker* extension `ms-azuretools.vscode-docker` as well.
 
 #### 3.1.2 Running the application and MySql server
 
-You can run the application together with MySql server using *docker-compose*.
+You can run the application together with MySql server using *docker-compose*.  
+Since Visual Studio Code doesn't support launching Compose files, you need to build the project manually.
 
-1. Rename the `.env-example` file int the project directory to `.env` and and set the `DB_PASSWORD` in the file.
-2. In the Explorer panel right-click the `docker-compose.debug.yml` file and select the `Compose Up` menu.  
+1. Run `dotnet build` command in the project folder.
+2. Rename the `.env-example` file int the project directory to `.env` and and set the `DB_PASSWORD` in the file.
+3. In the Explorer panel right-click the `docker-compose.debug.yml` file and select the `Compose Up` menu.  
   Wait until Docker build the image and MySql and kestrel servers are running. The process may take some time.
 
 If you want to run the debugger
