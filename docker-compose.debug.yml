@@ -1,0 +1,42 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: '3.4'
+
+services:
+  app:
+    image: warehousemanager:dev
+    build:
+      context: .
+      target: base
+      args: 
+        db_host: ${DB_HOST}
+        db_port: ${DB_PORT}
+        db_user: ${DB_USER}
+        db_password: ${DB_PASSWORD}
+        db_name: ${DB_NAME}
+    ports:
+      - ${APP_HOST_PORT}:5000
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ASPNETCORE_DB_CONN_STRING=server=${DB_HOST};port=${DB_PORT};database=${DB_NAME};user=${DB_USER};password=${DB_PASSWORD}
+    volumes:
+      - ~/.vsdbg:/remote_debugger:ro
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+      - ${PWD}:/app:rw
+      - ${PWD}:/src:rw
+    entrypoint: ["dotnet", "bin/Debug/netcoreapp3.1/WarehouseManager.dll"]
+    depends_on: 
+      - mysql
+
+  mysql:
+    image: mysql:8
+    volumes: 
+      - MySqlVol:/var/lib/mysql
+    ports:
+      - ${DB_HOST_PORT}:3306
+    environment: 
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+
+volumes: 
+  MySqlVol:
+    name: MySqlData
