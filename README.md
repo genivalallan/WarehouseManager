@@ -14,8 +14,8 @@ This project is being developed on the following environment:
 - **IDE:** Visual Studio Code
 - **OS:** Debian 11 (Bullseye)
 - **Programming Language:** C#
-- **Front-End:** HTML, Bootstrap CSS, Razor Views
-- **Framework:** .NET Core 3.1
+- **Front-end:** HTML, Bootstrap CSS, Razor Views
+- **Back-end Framework:** .NET Core 3.1
 - **Database:** MySql 8.0
 - **Web Server:** NGINX 1.19
 
@@ -25,20 +25,9 @@ The application should meet the following critirias:
 
 1. Manage enitites and informations related to storage and transportation of goods in a warehouse.
 2. Only registered users should access the application and restrictions are applied according to their roles.
-3. Create, Read, Update and Delete the following records:
-
-- Users
-- Clients
-- Products
-- Stocks
-- Vehicles
-- Drivers
-- Incomings
-- Shippings
-- Product Enhancements
-
-4. Provide a friendly user interface to collect and display informations stored in the DB.
-5. Provide well-structured reports of activities and stocks.
+3. Provide a friendly web interface to collect and display informations stored in the DB.
+4. Provide a web API to perfome CRUD operations over a LAN.
+5. Create well-structured reports of activities and stocks.
 
 **Further improvements:**
 
@@ -47,52 +36,45 @@ The application should meet the following critirias:
 
 ## 3. Configuring and running
 
-You can have the application running either using Docker or setting each component individually.  
-Following is how to configure and run MySql Server and the application.  
+You can have the application running either using Docker or directly in Visual Studio Code.  
+This project provides configuration files to support debugging using Docker out of the box.  
+Following is how to configure and run the application and MySql Server.
 
 ### 3.1 Using Docker
 
-Rename the `.env-example` file to `.env` and and set the `DB_PASSWORD` in the file.
+Install [*Docker*](https://www.docker.com) and *docker-compose* if you haven't yet.  
+You need the *Docker* extension `ms-azuretools.vscode-docker` as well.
 
-Install [*Docker*](https://www.docker.com) and *docker-compose* if you haven't yet and run the command in the project directory:
+#### 3.1.1 Running the application only
 
-```
-docker-compose up
-```
+1. Open the Debugger panel.
+2. Select `Docker .NET Core Launch` configuration.
+3. Press `F5` to run **with** debugger or `Ctrl + F5` to run **without** debugger.
 
-Wait until Docker build the image and MySql and kestrel servers are running.  
-The process may take some time.  
-Use `Ctrl + C` to stop the container.
+#### 3.1.2 Running the application and MySql server
 
-### 3.2 Setting The Environment Manually
+You can run the application together with MySql server using *docker-compose*.
 
-1. Install [.NET Core SDK 3.1](https://dotnet.microsoft.com/download)
-2. Install [MySql 8 Server](https://dev.mysql.com/downloads/mysql/)
-3. Set database connection string either editing `appsettings.json` or setting the `environment variable`.  
-   Use the string template and change `<ROOT-PASSWORD>`:
-   ```
-   "ASPNETCORE_DB_CONN_STRING": "server=localhost;port=3306;database=warehouse;user=root;password=<ROOT-PASSWORD>"
-   ```
+1. Rename the `.env-example` file int the project directory to `.env` and and set the `DB_PASSWORD` in the file.
+2. In the Explorer panel right-click the `docker-compose.debug.yml` file and select the `Compose Up` menu.  
+  Wait until Docker build the image and MySql and kestrel servers are running. The process may take some time.
 
-Using `.NET Core CLI`, run the following commands in the project directory:
-```
-dotnet run
-```
+If you want to run the debugger
 
-### 3.3 Known Issues
+1. Open the Debugger panel.
+2. Select `Docker .NET Core Attach (Preview)` configuration and press `F5` to run the debugger.
 
-#### 3.3.1 Dependencies Issues
+### 3.2 Running the application in Visual Studio Code
 
-- Visual Studio Code may report issues related to dependencies with **Microsoft.EntityFrameworkCore** package.  
-  Try to run the following command in the project directory:
-
-```
-dotnet restore
-```
+1. Open the Debugger panel.
+2. Select `.NET Core Launch` configuration.
+3. Press `F5` to run **with** debugger or `Ctrl + F5` to run **without** debugger.
 
 ## 4. Contributing
 
-Pull requests are welcome. Feel free to open an issue to discuss what could be improved.
+Pull requests are welcome.  
+Feel free to open an issue to discuss what could be improved.  
+If you have any problem trying to run the application, explain step by step how to reproduce the error you are facing.
 
 ## 5. License
 
