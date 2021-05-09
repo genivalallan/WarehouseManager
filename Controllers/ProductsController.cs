@@ -19,11 +19,11 @@ namespace WarehouseManager.Controllers
         public ProductsController(IWMRepository repo) => repository = repo;
 
         [HttpGet]
-        public IActionResult List()
+        public IActionResult List([FromQuery]int page = 1)
         {
             IEnumerable<Product> products = null;
             PagingInfo pagingInfo = new PagingInfo(
-                repository.Products.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+                repository.Products.Count(), itemsPerPage, page);
             
             if (pagingInfo.TotalItems != 0)
             {

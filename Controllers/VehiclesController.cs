@@ -19,11 +19,11 @@ namespace WarehouseManager.Controllers
         public VehiclesController(IWMRepository repo) => repository = repo;
 
         [HttpGet]
-        public IActionResult List()
+        public IActionResult List([FromQuery]int page = 1)
         {
             IEnumerable<Vehicle> vehicles = null;
             PagingInfo pagingInfo = new PagingInfo(
-                repository.Vehicles.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+                repository.Vehicles.Count(), itemsPerPage, page);
             
             if (pagingInfo.TotalItems != 0)
             {

@@ -20,11 +20,11 @@ namespace WarehouseManager.Controllers
         public EnhancementsController(IWMRepository repo) => repository = repo;
 
         [HttpGet]
-        public IActionResult List()
+        public IActionResult List([FromQuery]int page = 1)
         {
             IEnumerable<Enhancement> enhancements = null;
             PagingInfo pagingInfo = new PagingInfo(
-                repository.Enhancements.Count(), itemsPerPage, HttpContext.Request.Query["page"]);
+                repository.Enhancements.Count(), itemsPerPage, page);
             
             if (pagingInfo.TotalItems != 0)
             {

@@ -12,14 +12,8 @@ namespace WarehouseManager.Infrastructure
 
         public PagingInfo() {}
 
-        public PagingInfo(int totalItems, int itemsPerPage, string pageQuery)
+        public PagingInfo(int totalItems, int itemsPerPage, int page)
         {
-            if (pageQuery == "" ||
-                !Int32.TryParse(pageQuery, out int page))
-            {
-                page = 1;
-            }
-
             TotalItems = totalItems;
             ItemsPerPage = itemsPerPage;
             Page = page;
