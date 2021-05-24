@@ -51,48 +51,50 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id) =>
+        public IActionResult Details([FromRoute]int id) =>
             View(repository.Clients.FirstOrDefault(c => c.ID == id));
 
         [HttpGet]
         public IActionResult Create() => View();
 
         [HttpPost]
-        public IActionResult Create(Client client)
+        public IActionResult Create([FromForm]Client client)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                repository.Create(client);
-                return RedirectToAction("List");
+                return View();
             }
 
-            return View();
+            repository.Create(client);
+
+            return RedirectToAction("List");
         }
 
         [HttpGet]
-        public IActionResult Edit(int id) =>
+        public IActionResult Edit([FromRoute]int id) =>
             View(repository.Clients.FirstOrDefault(c => c.ID == id));
 
         [HttpPost]
-        public IActionResult Edit(int id, [FromForm]Client client)
+        public IActionResult Edit([FromRoute]int id, [FromForm]Client client)
         {
-            if (ModelState.IsValid &&
-                repository.Clients.Any(c => c.ID == id))
+            if (!ModelState.IsValid ||
+                !repository.Clients.Any(c => c.ID == id))
             {
-                client.ID = id;
-                repository.Update(client);
-                return RedirectToAction("List");
+                return View();
             }
 
-            return View();
+            client.ID = id;
+            repository.Update(client);
+
+            return RedirectToAction("List");
         }
 
         [HttpGet]
-        public IActionResult Delete(int id) =>
+        public IActionResult Delete([FromRoute]int id) =>
             View(repository.Clients.FirstOrDefault(c => c.ID == id));
 
         [HttpPost]
-        public IActionResult Delete(int id, Client client)
+        public IActionResult Delete([FromRoute]int id, [FromForm]Client client)
         {
             if (!repository.Clients.Any(c => c.ID == id))
             {

@@ -52,14 +52,14 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id) =>
+        public IActionResult Details([FromRoute]int id) =>
             View(repository.Vehicles.FirstOrDefault(v => v.ID == id));
 
         [HttpGet]
         public IActionResult Create() => View();
 
         [HttpPost]
-        public IActionResult Create(Vehicle vehicle)
+        public IActionResult Create([FromForm]Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -71,11 +71,11 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id) =>
+        public IActionResult Edit([FromRoute]int id) =>
             View(repository.Vehicles.FirstOrDefault(c => c.ID == id));
 
         [HttpPost]
-        public IActionResult Edit(int id, [FromForm]Vehicle vehicle)
+        public IActionResult Edit([FromRoute]int id, [FromForm]Vehicle vehicle)
         {
             if (ModelState.IsValid &&
                 repository.Vehicles.Any(v => v.ID == id))
@@ -89,7 +89,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id) =>
+        public IActionResult Delete([FromRoute]int id) =>
             View(repository.Vehicles.FirstOrDefault(v => v.ID == id));
 
         [HttpPost]

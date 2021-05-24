@@ -55,7 +55,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id) =>
+        public IActionResult Details([FromRoute]int id) =>
             View(repository.Stocks
                 .Include(s => s.Owner)
                 .Include(s => s.Product)
@@ -70,7 +70,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Stock stock)
+        public IActionResult Create([FromForm]Stock stock)
         {
             if (ModelState.IsValid)
             {
@@ -83,14 +83,14 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id) =>
+        public IActionResult Delete([FromRoute]int id) =>
             View(repository.Stocks
                 .Include(s => s.Owner)
                 .Include(s => s.Product)
                 .FirstOrDefault(s => s.ID == id));
 
         [HttpPost]
-        public IActionResult Delete(int id, Stock stock)
+        public IActionResult Delete([FromRoute]int id, [FromForm]Stock stock)
         {
             if (!repository.Stocks.Any(s => s.ID == id))
             {
@@ -103,8 +103,10 @@ namespace WarehouseManager.Controllers
             return RedirectToAction("List");
         }
 
-        private void PopulateDropDownLists(object selectdClient = null, object selectedProduct = null)
-        {
+        private void PopulateDropDownLists(
+            object selectdClient = null,
+            object selectedProduct = null
+        ){
             var clients = from c in repository.Clients orderby c.Name select c;
             var products = from p in repository.Products orderby p.Name select p;
 

@@ -52,14 +52,14 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id) =>
+        public IActionResult Details([FromRoute]int id) =>
             View(repository.Products.FirstOrDefault(p => p.ID == id));
 
         [HttpGet]
         public IActionResult Create() => View();
 
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create([FromForm]Product product)
         {
             if (ModelState.IsValid)
             {
@@ -71,11 +71,11 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id) =>
+        public IActionResult Edit([FromRoute]int id) =>
             View(repository.Products.FirstOrDefault(c => c.ID == id));
 
         [HttpPost]
-        public IActionResult Edit(int id, [FromForm]Product product)
+        public IActionResult Edit([FromRoute]int id, [FromForm]Product product)
         {
             if (ModelState.IsValid &&
                 repository.Products.Any(p => p.ID == id))
@@ -89,11 +89,11 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id) =>
+        public IActionResult Delete([FromRoute]int id) =>
             View(repository.Products.FirstOrDefault(p => p.ID == id));
 
         [HttpPost]
-        public IActionResult Delete(int id, Product product)
+        public IActionResult Delete([FromRoute]int id, [FromForm]Product product)
         {
             if (!repository.Products.Any(p => p.ID == id))
             {

@@ -57,7 +57,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id) =>
+        public IActionResult Details([FromRoute]int id) =>
             View(repository.Shippings
                 .Include(s => s.Client)
                 .Include(s => s.Stock.Product)
@@ -74,7 +74,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Shipping shipping)
+        public IActionResult Create([FromForm]Shipping shipping)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id) =>
+        public IActionResult Delete([FromRoute]int id) =>
             View(repository.Shippings
                 .Include(s => s.Client)
                 .Include(s => s.Stock.Product)
@@ -101,7 +101,7 @@ namespace WarehouseManager.Controllers
                 .FirstOrDefault(s => s.ID == id));
 
         [HttpPost]
-        public IActionResult Delete(int id, Shipping shipping)
+        public IActionResult Delete([FromRoute]int id, [FromForm]Shipping shipping)
         {
             if (!repository.Shippings.Any(s => s.ID == id))
             {

@@ -57,7 +57,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id) =>
+        public IActionResult Details([FromRoute]int id) =>
             View(repository.Incomings
                 .Include(i => i.Client)
                 .Include(i => i.Stock.Product)
@@ -74,7 +74,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Incoming incoming)
+        public IActionResult Create([FromForm]Incoming incoming)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id) =>
+        public IActionResult Delete([FromRoute]int id) =>
             View(repository.Incomings
                 .Include(i => i.Client)
                 .Include(i => i.Stock.Product)
@@ -101,7 +101,7 @@ namespace WarehouseManager.Controllers
                 .FirstOrDefault(i => i.ID == id));
 
         [HttpPost]
-        public IActionResult Delete(int id, Incoming incoming)
+        public IActionResult Delete([FromRoute]int id, [FromForm]Incoming incoming)
         {
             if (!repository.Incomings.Any(i => i.ID == id))
             {

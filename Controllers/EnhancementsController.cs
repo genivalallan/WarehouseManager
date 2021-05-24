@@ -57,7 +57,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id) =>
+        public IActionResult Details([FromRoute]int id) =>
             View(repository.Enhancements
                 .Include(e => e.BaseStock.Product)
                 .Include(e => e.FinalStock.Product)
@@ -74,7 +74,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Enhancement enhancement)
+        public IActionResult Create([FromForm]Enhancement enhancement)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id) =>
+        public IActionResult Delete([FromRoute]int id) =>
             View(repository.Enhancements
                 .Include(e => e.BaseStock.Product)
                 .Include(e => e.FinalStock.Product)
@@ -101,7 +101,7 @@ namespace WarehouseManager.Controllers
                 .FirstOrDefault(e => e.ID == id));
 
         [HttpPost]
-        public IActionResult Delete(int id, Enhancement enhancement)
+        public IActionResult Delete([FromRoute]int id, [FromForm]Enhancement enhancement)
         {
             if (!repository.Enhancements.Any(e => e.ID == id))
             {

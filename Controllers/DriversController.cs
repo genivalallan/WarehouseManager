@@ -52,14 +52,14 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Details(int id) =>
+        public IActionResult Details([FromRoute]int id) =>
             View(repository.Drivers.FirstOrDefault(d => d.ID == id));
 
         [HttpGet]
         public IActionResult Create() => View();
 
         [HttpPost]
-        public IActionResult Create(Driver driver)
+        public IActionResult Create([FromForm]Driver driver)
         {
             if (ModelState.IsValid)
             {
@@ -71,11 +71,11 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id) =>
+        public IActionResult Edit([FromRoute]int id) =>
             View(repository.Drivers.FirstOrDefault(c => c.ID == id));
 
         [HttpPost]
-        public IActionResult Edit(int id, [FromForm]Driver driver)
+        public IActionResult Edit([FromRoute]int id, [FromForm]Driver driver)
         {
             if (ModelState.IsValid &&
                 repository.Drivers.Any(d => d.ID == id))
@@ -89,11 +89,11 @@ namespace WarehouseManager.Controllers
         }
 
         [HttpGet]
-        public IActionResult Delete(int id) =>
+        public IActionResult Delete([FromRoute]int id) =>
             View(repository.Drivers.FirstOrDefault(d => d.ID == id));
 
         [HttpPost]
-        public IActionResult Delete(int id, Driver driver)
+        public IActionResult Delete([FromRoute]int id, [FromForm]Driver driver)
         {
             if (!repository.Drivers.Any(d => d.ID == id))
             {

@@ -38,7 +38,7 @@ namespace WarehouseManager
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("ListEntity", "{controller}/{Action=List}");
+                endpoints.MapControllerRoute("ListActionDefault", "{controller}/{Action=List}/{id?}");
                 endpoints.MapDefaultControllerRoute();
             });
         }
