@@ -80,7 +80,7 @@ namespace WarehouseManager.Controllers
             if (!ModelState.IsValid ||
                 !repository.Clients.Any(c => c.ID == id))
             {
-                return View();
+                return View(client);
             }
 
             client.ID = id;

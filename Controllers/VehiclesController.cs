@@ -77,15 +77,15 @@ namespace WarehouseManager.Controllers
         [HttpPost]
         public IActionResult Edit([FromRoute]int id, [FromForm]Vehicle vehicle)
         {
-            if (ModelState.IsValid &&
-                repository.Vehicles.Any(v => v.ID == id))
+            if (!ModelState.IsValid &&
+                !repository.Vehicles.Any(v => v.ID == id))
             {
-                vehicle.ID = id;
-                repository.Update(vehicle);
-                return RedirectToAction("List");
+                return View(vehicle);
             }
 
-            return View();
+            vehicle.ID = id;
+            repository.Update(vehicle);
+            return RedirectToAction("List");
         }
 
         [HttpGet]

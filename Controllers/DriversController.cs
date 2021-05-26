@@ -77,15 +77,15 @@ namespace WarehouseManager.Controllers
         [HttpPost]
         public IActionResult Edit([FromRoute]int id, [FromForm]Driver driver)
         {
-            if (ModelState.IsValid &&
-                repository.Drivers.Any(d => d.ID == id))
+            if (!ModelState.IsValid &&
+                !repository.Drivers.Any(d => d.ID == id))
             {
-                driver.ID = id;
-                repository.Update(driver);
-                return RedirectToAction("List");
+                return View(driver);
             }
 
-            return View();
+            driver.ID = id;
+            repository.Update(driver);
+            return RedirectToAction("List");
         }
 
         [HttpGet]
