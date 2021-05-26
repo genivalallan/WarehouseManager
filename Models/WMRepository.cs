@@ -47,31 +47,39 @@ namespace WarehouseManager.Models
 
         public void Create(Enhancement e)
         {
-            bool invalidReference = false;
+            if (e.BaseStockID == e.FinalStockID)
+                throw new ArgumentException("Destination stock equals base stock.");
+            
+            string invalidArguments = "";
 
             Stock baseStock = dbContext.Stocks.Find(e.BaseStockID);
-            if (baseStock == null) invalidReference = true;
+            if (baseStock == null) invalidArguments = "BaseStockID";
 
             Stock finalStock = dbContext.Stocks.Find(e.FinalStockID);
-            if (finalStock == null) invalidReference = true;
+            if (finalStock == null)
+                invalidArguments += ((invalidArguments != "") ? "," : "") + "FinalStockID";
 
             Vehicle vehicle = dbContext.Vehicles.Find(e.VehicleID);
-            if (vehicle == null) invalidReference = true;
+            if (vehicle == null)
+                invalidArguments += ((invalidArguments != "") ? "," : "") + "VehicleID";
 
-            if (invalidReference)
+            if (invalidArguments != "")
             {
-                throw new ArgumentException("Invalid foreign key reference.");
+                throw new ArgumentException("Invalid entity ID reference.", invalidArguments);
+            }
+            
+            if (e.GrossWeight < vehicle.Tare )
+            {
+                throw new ArgumentException("Gross weight less than vehicle tare.");
             }
 
-            if (vehicle.Tare > e.GrossWeight)
-            {
-                throw new ArgumentException("Vehicle tare greater than gross weight.");
-            }
-
-            e.CreatedAt = DateTime.Now;
             e.NetWeight = e.GrossWeight - vehicle.Tare;
+            if (e.NetWeight > baseStock.Balance)
+                throw new ArgumentException("Net weight greater than stock balance.");
+
             baseStock.Balance -= e.NetWeight;
             finalStock.Balance += e.NetWeight;
+            e.CreatedAt = DateTime.Now;
 
             dbContext.Enhancements.Add(e);
             dbContext.Stocks.Update(baseStock);
@@ -81,27 +89,28 @@ namespace WarehouseManager.Models
 
         public void Create(Incoming i)
         {
-            bool invalidReference = false;
+            string invalidArguments = "";
 
             Stock stock = dbContext.Stocks.Find(i.StockID);
-            if (stock == null) invalidReference = true;
+            if (stock == null) invalidArguments = "StockID";
 
             Vehicle vehicle = dbContext.Vehicles.Find(i.VehicleID);
-            if (vehicle == null) invalidReference = true;
+            if (vehicle == null)
+                invalidArguments += ((invalidArguments != "") ? "," : "" ) + "VehicleID";
 
-            if (invalidReference)
+            if (invalidArguments != "")
             {
-                throw new ArgumentException("Invalid foreign key reference.");
+                throw new ArgumentException("Invalid entity ID reference.", invalidArguments);
             }
 
-            if (vehicle.Tare > i.GrossWeight)
+            if (i.GrossWeight < vehicle.Tare)
             {
-                throw new ArgumentException("Vehicle tare greater than gross weight.");
+                throw new ArgumentException("Gross weight less than vehicle tare.");
             }
 
-            i.CreatedAt = DateTime.Now;
             i.NetWeight = i.GrossWeight - vehicle.Tare;
             stock.Balance += i.NetWeight;
+            i.CreatedAt = DateTime.Now;
 
             dbContext.Incomings.Add(i);
             dbContext.Stocks.Update(stock);
@@ -116,27 +125,31 @@ namespace WarehouseManager.Models
 
         public void Create(Shipping s)
         {
-            bool invalidReference = false;
+            string invalidArguments = "";
 
             Stock stock = dbContext.Stocks.Find(s.StockID);
-            if (stock == null) invalidReference = true;
+            if (stock == null) invalidArguments = "StockID";
 
             Vehicle vehicle = dbContext.Vehicles.Find(s.VehicleID);
-            if (vehicle == null) invalidReference = true;
+            if (vehicle == null)
+                invalidArguments += ((invalidArguments != "") ? "," : "") + "VehicleID";
 
-            if (invalidReference)
+            if (invalidArguments != "")
             {
-                throw new ArgumentException("Invalid foreign key reference.");
+                throw new ArgumentException("Invalid entity ID reference.", invalidArguments);
             }
 
-            if (vehicle.Tare > s.GrossWeight)
+            if (s.GrossWeight < vehicle.Tare)
             {
-                throw new ArgumentException("Vehicle tare greater than gross weight.");
+                throw new ArgumentException("Gross weight less than vehicle tare.");
             }
 
-            s.CreatedAt = DateTime.Now;
             s.NetWeight = s.GrossWeight - vehicle.Tare;
+            if (s.NetWeight > stock.Balance)
+                throw new ArgumentException("Net weight greater than stock balance.");
+            
             stock.Balance -= s.NetWeight;
+            s.CreatedAt = DateTime.Now;
 
             dbContext.Shippings.Add(s);
             dbContext.Stocks.Update(stock);
