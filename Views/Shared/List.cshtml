@@ -1,4 +1,7 @@
 @model ListViewModel
+@{
+    string partialViewAddress = "";
+}
         <h2 class="border border-dark rounded bg-secondary text-white text-center">
             Lista de @ViewData["Entity"]
         </h2>
@@ -13,33 +16,8 @@
 else
 {
         <table class="table table-bordered table-striped table-sm">
-@switch (ViewData["Controller"])
-{
-    case "clients":
-        <partial name="/Views/Clients/_ListClients.cshtml" view-data="ViewData" />
-        break;
-    case "drivers":
-        <partial name="/Views/Drivers/_ListDrivers.cshtml" view-data="ViewData" />
-        break;
-    case "enhancements":
-        <partial name="/Views/Enhancements/_ListEnhancements.cshtml" view-data="ViewData" />
-        break;
-    case "incomings":
-        <partial name="/Views/Incomings/_ListIncomings.cshtml" view-data="ViewData" />
-        break;
-    case "products":
-        <partial name="/Views/Products/_ListProducts.cshtml" view-data="ViewData" />
-        break;
-    case "shippings":
-        <partial name="/Views/Shippings/_ListShippings.cshtml" view-data="ViewData" />
-        break;
-    case "stocks":
-        <partial name="/Views/Stocks/_ListStocks.cshtml" view-data="ViewData" />
-        break;
-    case "vehicles":
-        <partial name="/Views/Vehicles/_ListVehicles.cshtml" view-data="ViewData" />
-        break;
-}
+@(partialViewAddress = $"/Views/{ViewData["Controller"]}/_List{ViewData["Controller"]}.cshtml");
+            <partial name="@partialViewAddress" view-data="ViewData" />
         </table>
         <partial name="_PagingButtons" for="@Model.PagingInfo" view-data="ViewData" />
 }
