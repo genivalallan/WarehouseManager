@@ -40,6 +40,7 @@ namespace WarehouseManager.Controllers
                     .Take(pagingInfo.ItemsPerPage)
                     .Include(i => i.Client)
                     .Include(i => i.Stock.Product)
+                    .Include(i => i.Stock.Owner)
                     .Include(i => i.Driver)
                     .Include(i => i.Vehicle)
                     .AsNoTracking();
@@ -125,7 +126,7 @@ namespace WarehouseManager.Controllers
                 .Include(s => s.Owner)
                 .Include(s => s.Product)
                 .OrderBy(s => s.Product.Name)
-                .Select(s => new KeyValuePair<int, string>(s.ID, $"{s.Product.Name} - {s.Owner.Name}"));
+                .Select(s => new KeyValuePair<int, string>(s.ID, $"{s.ID} - {s.Product.Name} - {s.Owner.Name}"));
             var clients = from c in repository.Clients orderby c.Name select c;
             var drivers = from d in repository.Drivers orderby d.Name select d;
             var vehicles = from v in repository.Vehicles orderby v.Plate1 select v;

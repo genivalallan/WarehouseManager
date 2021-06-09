@@ -6,8 +6,8 @@
 }
     <tr>
         <th>#</th>
-        <th>Cliente</th>
-        <th>Estoque</th>
+        <th>Origem</th>
+        <th>Destino</th>
         @* <th>Veículo</th>
         <th>Motorista</th>
         <th>Peso Bruto</th>
@@ -22,7 +22,7 @@
     <tr>
         <td>@(counter++)</td>
         <td>@i.Client.Name</td>
-        <td>@i.Stock.Product.Name</td>
+        <td>@($"{i.StockID} - {i.Stock.Product.Name} - {i.Stock.Owner.Name}")</td>
         @* <td>@i.Vehicle.Plate1</td>
         <td>@i.Driver.Name</td>
         <td>@i.GrossWeight</td>

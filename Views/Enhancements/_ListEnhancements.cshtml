@@ -21,8 +21,8 @@
 {
     <tr>
         <td>@(counter++)</td>
-        <td>@e.BaseStock.Product.Name</td>
-        <td>@e.FinalStock.Product.Name</td>
+        <td>@($"{e.BaseStockID} - {e.BaseStock.Product.Name} - {e.BaseStock.Owner.Name}")</td>
+        <td>@($"{e.FinalStockID} - {e.FinalStock.Product.Name} - {e.FinalStock.Owner.Name}")</td>
         @* <td>@e.Vehicle.Plate1</td>
         <td>@e.Driver.Name</td>
         <td>@e.GrossWeight</td>
