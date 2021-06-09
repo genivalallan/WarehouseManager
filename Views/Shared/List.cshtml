@@ -1,6 +1,6 @@
 @model ListViewModel
 @{
-    string partialViewAddress = "";
+    string partialViewAddress = $"/Views/{ViewData["Controller"]}/_List{ViewData["Controller"]}.cshtml";
 }
         <h2 class="border border-dark rounded bg-secondary text-white text-center">
             Lista de @ViewData["Entity"]
@@ -16,7 +16,6 @@
 else
 {
         <table class="table table-bordered table-striped table-sm">
-@(partialViewAddress = $"/Views/{ViewData["Controller"]}/_List{ViewData["Controller"]}.cshtml");
             <partial name="@partialViewAddress" view-data="ViewData" />
         </table>
         <partial name="_PagingButtons" for="@Model.PagingInfo" view-data="ViewData" />
