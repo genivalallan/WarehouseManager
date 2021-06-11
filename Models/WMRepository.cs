@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace WarehouseManager.Models
 {
@@ -168,99 +169,73 @@ namespace WarehouseManager.Models
             dbContext.SaveChanges();
         }
 
-        public void Update(Client c)
+        public void Update<T>(T t)
         {
-            dbContext.Clients.Update(c);
+            switch (t)
+            {
+                case Client c:
+                    dbContext.Clients.Update(c);
+                    break;
+                case Driver d:
+                    dbContext.Drivers.Update(d);
+                    break;
+                case Enhancement e:
+                    dbContext.Enhancements.Update(e);
+                    break;
+                case Incoming i:
+                    dbContext.Incomings.Update(i);
+                    break;
+                case Product p:
+                    dbContext.Products.Update(p);
+                    break;
+                case Shipping s:
+                    dbContext.Shippings.Update(s);
+                    break;
+                case Stock stk:
+                    dbContext.Stocks.Update(stk);
+                    break;
+                case Vehicle v:
+                    dbContext.Vehicles.Update(v);
+                    break;
+                default:
+                    return;
+            }
+
             dbContext.SaveChanges();
         }
 
-        public void Update(Driver d)
+        public void Delete<T>(T t)
         {
-            dbContext.Drivers.Update(d);
-            dbContext.SaveChanges();
-        }
+            switch (t)
+            {
+                case Client c:
+                    dbContext.Clients.Remove(c);
+                    break;
+                case Driver d:
+                    dbContext.Drivers.Remove(d);
+                    break;
+                case Enhancement e:
+                    dbContext.Enhancements.Remove(e);
+                    break;
+                case Incoming i:
+                    dbContext.Incomings.Remove(i);
+                    break;
+                case Product p:
+                    dbContext.Products.Remove(p);
+                    break;
+                case Shipping s:
+                    dbContext.Shippings.Remove(s);
+                    break;
+                case Stock stk:
+                    dbContext.Stocks.Remove(stk);
+                    break;
+                case Vehicle v:
+                    dbContext.Vehicles.Remove(v);
+                    break;
+                default:
+                    return;
+            }
 
-        public void Update(Enhancement e)
-        {
-            dbContext.Enhancements.Update(e);
-            dbContext.SaveChanges();
-        }
-
-        public void Update(Incoming i)
-        {
-            dbContext.Incomings.Update(i);
-            dbContext.SaveChanges();
-        }
-
-        public void Update(Product p)
-        {
-            dbContext.Products.Update(p);
-            dbContext.SaveChanges();
-        }
-
-        public void Update(Shipping s)
-        {
-            dbContext.Shippings.Update(s);
-            dbContext.SaveChanges();
-        }
-
-        public void Update(Stock s)
-        {
-            dbContext.Stocks.Update(s);
-            dbContext.SaveChanges();
-        }
-
-        public void Update(Vehicle v)
-        {
-            dbContext.Vehicles.Update(v);
-            dbContext.SaveChanges();
-        }
-
-        public void Delete(Client c)
-        {
-            dbContext.Clients.Remove(c);
-            dbContext.SaveChanges();
-        }
-
-        public void Delete(Driver d)
-        {
-            dbContext.Drivers.Remove(d);
-            dbContext.SaveChanges();
-        }
-
-        public void Delete(Enhancement e)
-        {
-            dbContext.Enhancements.Remove(e);
-            dbContext.SaveChanges();
-        }
-
-        public void Delete(Incoming i)
-        {
-            dbContext.Incomings.Remove(i);
-            dbContext.SaveChanges();
-        }
-
-        public void Delete(Product p)
-        {
-            dbContext.Products.Remove(p);
-            dbContext.SaveChanges();
-        }
-
-        public void Delete(Shipping s)
-        {
-            dbContext.Shippings.Remove(s);
-            dbContext.SaveChanges();
-        }
-
-        public void Delete(Stock s)
-        {
-            dbContext.Stocks.Remove(s);
-            dbContext.SaveChanges();
-        }
-
-        public void Delete(Vehicle v)
-        {
-            dbContext.Vehicles.Remove(v);
             dbContext.SaveChanges();
         }
     }
