@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace WarehouseManager.Models
 {
@@ -14,6 +15,8 @@ namespace WarehouseManager.Models
         IQueryable<Enhancement> Enhancements { get; }
 
         public bool DbInit(bool sample = false);
+
+        public MySqlDbContext DbContext();
 
         public void Create(Client c);
         public void Create(Product p);

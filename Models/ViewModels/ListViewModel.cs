@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-
-using WarehouseManager.Models;
 using WarehouseManager.Infrastructure;
 
 namespace WarehouseManager.Models.ViewModels
@@ -9,5 +6,6 @@ namespace WarehouseManager.Models.ViewModels
     {
         public string JsonItems { get; set; }
         public PagingInfo PagingInfo { get; set; }
+        public ListFilter ListFilter { get; set; }
     }
 }

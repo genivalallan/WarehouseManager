@@ -34,6 +34,8 @@ namespace WarehouseManager.Models
             return false;
         }
 
+        public MySqlDbContext DbContext() => dbContext;
+
         public void Create(Client c)
         {
             dbContext.Clients.Add(c);

@@ -1,7 +1,6 @@
-@using WarehouseManager.Infrastructure
-@model PagingInfo
+@model ListViewModel
 
-    <div page-model="Model" page-action='@ViewData["Action"]' page-controller='@ViewData["Controller"]'
+    <div paging-model="@Model" page-action='@ViewData["Action"]' page-controller='@ViewData["Controller"]'
         page-classes-enabled="true" page-class="btn" page-class-normal="btn-outline-success"
         page-class-selected="btn-success" class="btn-group pull-right m-1">
     </div>
