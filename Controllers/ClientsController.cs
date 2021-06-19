@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Linq;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
@@ -14,40 +15,101 @@ namespace WarehouseManager.Controllers
     public class ClientsController : Controller
     {
         private readonly IWMRepository repository;
-        private int itemsPerPage = 5;
 
         public ClientsController(IWMRepository repo) => repository = repo;
 
         [HttpGet]
-        public IActionResult List([FromQuery]int page = 1)
-        {
-            IEnumerable<Client> clients = null;
-            PagingInfo pagingInfo = new PagingInfo(
-                repository.Clients.Count(), itemsPerPage, page);
+        public IActionResult List(
+            string orderby,
+            string order,
+            string searchby,
+            string search,
+            int page = 1
+        ){
+            List<Client> clients = null;
+            PagingInfo paging = new PagingInfo();
+            ListFilter filter = new ListFilter();
+            MySqlParameter p0 = null;
+            string queryCondition = "";
 
-            if (pagingInfo.TotalItems != 0)
+            orderby = String.IsNullOrEmpty(orderby) ? "id" : orderby.Trim();
+            order = String.IsNullOrEmpty(order) ? "asc" : order.Trim();
+
+            if (repository.Clients.Count() != 0)
             {
-                if (pagingInfo.Page < 1 ||
-                    pagingInfo.Page > pagingInfo.TotalPages)
+                if ((orderby != "id" && orderby != "name" && orderby != "address") ||
+                    (order != "asc" && order != "desc"))
                 {
-                    return NotFound();
+                    return RedirectToAction();
                 }
 
-                clients = repository.Clients
-                    .OrderBy(c => c.ID)
-                    .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
-                    .Take(pagingInfo.ItemsPerPage)
-                    .AsNoTracking();
+                if (!String.IsNullOrEmpty(search = search?.Trim()))
+                {
+                    searchby = searchby?.Trim();
+                    if (searchby != "name" && searchby != "address")
+                    {
+                        return RedirectToAction();
+                    }
+                    else
+                    {
+                        filter.SearchBy = searchby;
+                        filter.Search = search;
+                        queryCondition = $" WHERE {searchby} LIKE @search";
+                        p0 = new MySqlParameter("@search", $"%{search}%");
+                    }
+                }
+
+                filter.Order = order;
+                filter.OrderBy = orderby;
+
+                string filterQuery = "SELECT * FROM client";
+                filterQuery += queryCondition;
+                filterQuery += $" ORDER BY {filter.OrderBy} {filter.Order}";
+
+                paging.TotalItems = repository.DbContext().Clients
+                    .FromSqlRaw(filterQuery, p0).Count();
+                
+                paging.Page = (page <= 1) ? 1 : (page >= paging.TotalPages ? paging.TotalPages : page);
+                
+                clients = repository.DbContext().Clients
+                    .FromSqlRaw(filterQuery, p0)
+                    .Skip((paging.Page - 1) * paging.ItemsPerPage)
+                    .Take(paging.ItemsPerPage)
+                    .AsNoTracking()
+                    .ToList();
             }
 
-            ViewData["Title"] = "Lista de Clientes";
-            ViewData["Entity"] = "Clientes";
-            ViewData["Controller"] = "clients";
             return View(new ListViewModel
             {
                 JsonItems = JsonSerializer.Serialize(clients),
-                PagingInfo = pagingInfo
+                PagingInfo = paging,
+                ListFilter = filter
             });
+        }
+
+        [HttpPost]
+        public IActionResult List(
+            [FromForm]string orderby,
+            [FromForm]string order,
+            [FromForm]string searchby,
+            [FromForm]string search,
+            int _,
+            [FromForm]int page = 1
+        ){
+            orderby ??= "";
+            order ??= "";
+            searchby ??= "";
+            search = search?.Trim();
+
+            object query = new {
+                page = (page == 1) ? null : page.ToString(),
+                orderby = (orderby == "id") ? null : orderby.Trim(),
+                order = (order == "asc") ? null : order.Trim(),
+                searchby = String.IsNullOrEmpty(search) ? null : searchby.Trim(),
+                search
+            };
+
+            return RedirectToAction("List", "Clients", query);
         }
 
         [HttpGet]

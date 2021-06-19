@@ -1,0 +1,197 @@
+@using System.Text.Json
+@model ListViewModel
+@{
+    ViewData["Controller"] = "Clients";
+    ViewData["Action"] = "List";
+    int counter = 0;
+    int i = 0;
+    List<Client> clients = null;
+    SelectList orderSelect = null;
+    SelectList orderbySelect = null;
+    SelectList searchbySelect = null;
+
+    if (Model.PagingInfo.TotalItems != 0)
+    {
+        if (Model.ListFilter.Order == "desc")
+        {
+            counter = Model.PagingInfo.TotalItems - (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage + 1;
+            i = -1;
+        }
+        else
+        {
+            counter = (Model.PagingInfo.Page - 1) * Model.PagingInfo.ItemsPerPage;
+            i = 1;
+        }
+
+        clients = JsonSerializer.Deserialize<List<Client>>(Model.JsonItems);
+
+        orderSelect = new SelectList(
+            new Dictionary<string, string>() { ["asc"] = "Crescente", ["desc"] = "Decrescente" },
+            "Key",
+            "Value",
+            Model.ListFilter.Order
+        );
+
+        orderbySelect = new SelectList(
+            new Dictionary<string, string>() { ["id"] = "ID", ["name"] = "Nome", ["address"] = "Endereço" },
+            "Key",
+            "Value",
+            Model.ListFilter.OrderBy
+        );
+
+        searchbySelect = new SelectList(
+            new Dictionary<string, string>() { ["name"] = "Nome", ["address"] = "Endereço"},
+            "Key",
+            "Value",
+            Model.ListFilter.SearchBy
+        );
+    }
+}
+        <h2 class="border border-dark rounded bg-secondary text-white text-center">
+            Lista de Clientes
+        </h2>
+@if (Model.PagingInfo.TotalItems == 0)
+{
+        <div>
+            <p class="bg-dark bg-gradient text-white text-center">
+                Nenhum item encontrado.
+            </p>
+        </div>
+
+        <a asp-action="List" class="btn btn-info">Voltar</a>
+}
+else
+{
+        <!-- Begin filter form -->
+        <form method="POST" asp-action="List">
+        <div class="row">
+            <div class="col col-4">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Ordenar por</span>
+                    </div>
+                    <select asp-items="@orderbySelect" id="orderby" name="orderby" class="custom-select col-4"></select>
+                    <select asp-items="@orderSelect" id="order" name="order" class="custom-select col"></select>
+                </div>
+            </div>
+
+            <div class="col col-5">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Buscar</span>
+                    </div>
+                    <select asp-items="@searchbySelect" id="searchby" name="searchby" class="custom-select col-3"></select>
+                    <input type="text" id="search" name="search" class="form-control col" value="@Model.ListFilter.Search">
+                </div>
+            </div>
+
+            <input type="hidden" name="page" id="page" value="@Model.PagingInfo.Page">
+
+            <div class="col col-1 mb-3">
+                <button type="submit" class="btn btn-sm btn-success">Aplicar</button>
+            </div>
+
+            <div class="col col-1 mb3">
+                <a asp-action="List" class="btn btn-sm btn-info">Resetar</a>
+            </div>
+        </div>
+        </form>
+        <!-- End filter form -->
+        <!-- Begin list table -->
+        <table class="table table-bordered table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>
+                        <a asp-action="List" asp-route-orderby=""
+                            asp-route-order='@(Model.ListFilter.Order == "asc" ? "" : "desc")'
+                            asp-route-searchby="@Model.ListFilter.SearchBy"
+                            asp-route-search="@Model.ListFilter.Search"
+                            asp-route-page='@(@Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'>#</a>
+                    @if (Model.ListFilter.OrderBy == "id")
+                    {
+                        <a asp-action="List" asp-route-orderby=""
+                            asp-route-order='@(Model.ListFilter.Order == "asc" ? "desc" : "")'
+                            asp-route-searchby="@Model.ListFilter.SearchBy"
+                            asp-route-search="@Model.ListFilter.Search"
+                            asp-route-page='@(Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'>
+                            @if (Model.ListFilter.Order == "asc")
+                            {
+                                @("▲")
+                            }
+                            else
+                            {
+                                @("▼")
+                            }
+                        </a>
+                    }
+                    </th>
+                    <th>
+                        <a asp-action="List" asp-route-orderby="name"
+                            asp-route-order='@(Model.ListFilter.Order == "asc" ? "" : "desc")'
+                            asp-route-searchby="@Model.ListFilter.SearchBy"
+                            asp-route-search="@Model.ListFilter.Search"
+                            asp-route-page='@(@Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'>Nome</a>
+                    @if (Model.ListFilter.OrderBy == "name")
+                    {
+                        <a asp-action="List" asp-route-orderby="name"
+                            asp-route-order='@(Model.ListFilter.Order == "asc" ? "desc" : "")'
+                            asp-route-searchby="@Model.ListFilter.SearchBy"
+                            asp-route-search="@Model.ListFilter.Search"
+                            asp-route-page='@(Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'>
+                            @if (Model.ListFilter.Order == "asc")
+                            {
+                                @("▲")
+                            }
+                            else
+                            {
+                                @("▼")
+                            }
+                        </a>
+                    }
+                    </th>
+                    <th>
+                        <a asp-action="List" asp-route-orderby="address"
+                            asp-route-order='@(Model.ListFilter.Order == "asc" ? "" : "desc")'
+                            asp-route-searchby="@Model.ListFilter.SearchBy"
+                            asp-route-search="@Model.ListFilter.Search"
+                            asp-route-page='@(@Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'>Endereço</a>
+                    @if (Model.ListFilter.OrderBy == "address")
+                    {
+                        <a asp-action="List" asp-route-orderby="address"
+                            asp-route-order='@(Model.ListFilter.Order == "asc" ? "desc" : "")'
+                            asp-route-searchby="@Model.ListFilter.SearchBy"
+                            asp-route-search="@Model.ListFilter.Search"
+                            asp-route-page='@(Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'>
+                            @if (Model.ListFilter.Order == "asc")
+                            {
+                                @("▲")
+                            }
+                            else
+                            {
+                                @("▼")
+                            }
+                        </a>
+                    }
+                    </th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+@foreach (var c in clients)
+{
+                <tr>
+                    <td>@(counter += i)</td>
+                    <td>@c.Name</td>
+                    <td>@c.Address</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@c.ID" class="btn btn-info">Detalhes</a>
+                        <a asp-action="Edit" asp-route-id="@c.ID" class="btn btn-success">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@c.ID" class="btn btn-danger">Remover</a>
+                    </td>
+                </tr>
+}
+            </tbody>
+        </table>
+        <!-- End list table -->
+        <partial name="_PagingButtons" model="Model" view-data="ViewData" />
+}
