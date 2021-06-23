@@ -95,8 +95,7 @@ namespace WarehouseManager.Controllers
             [FromForm]string search,
             int _,
             [FromForm]int page = 1
-        )
-        {
+        ){
             orderby ??= "";
             order ??= "";
             searchby ??= "";
