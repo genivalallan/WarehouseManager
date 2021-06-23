@@ -89,12 +89,12 @@ namespace WarehouseManager.Controllers
 
         [HttpPost]
         public IActionResult List(
-            [FromForm] string orderby,
-            [FromForm] string order,
-            [FromForm] string searchby,
-            [FromForm] string search,
+            [FromForm]string orderby,
+            [FromForm]string order,
+            [FromForm]string searchby,
+            [FromForm]string search,
             int _,
-            [FromForm] int page = 1
+            [FromForm]int page = 1
         )
         {
             orderby ??= "";
