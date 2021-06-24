@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
@@ -14,41 +15,102 @@ namespace WarehouseManager.Controllers
     public class VehiclesController : Controller
     {
         private readonly IWMRepository repository;
-        private int itemsPerPage = 5;
 
         public VehiclesController(IWMRepository repo) => repository = repo;
 
         [HttpGet]
-        public IActionResult List([FromQuery]int page = 1)
-        {
-            IEnumerable<Vehicle> vehicles = null;
-            PagingInfo pagingInfo = new PagingInfo(
-                repository.Vehicles.Count(), itemsPerPage, page);
-            
-            if (pagingInfo.TotalItems != 0)
+        public IActionResult List(
+            string orderby,
+            string order,
+            string searchby,
+            string search,
+            int page = 1
+        ){
+            List<Vehicle> vehicles = null;
+            PagingInfo paging = new PagingInfo();
+            ListFilter filter = new ListFilter();
+            MySqlParameter p0 = null;
+            string queryCondition = "";
+
+            orderby = String.IsNullOrEmpty(orderby) ? "id" : orderby.Trim();
+            order = String.IsNullOrEmpty(order) ? "asc" : order.Trim();
+
+            if (repository.Vehicles.Count() != 0)
             {
-                if (pagingInfo.Page < 1 ||
-                    pagingInfo.Page > pagingInfo.TotalPages)
+                if ((orderby != "id" && orderby != "plate1" && orderby != "plate2" && orderby != "plate3" && orderby != "rntrc") ||
+                    (order != "asc" && order != "desc"))
                 {
-                    return NotFound();
+                    return RedirectToAction();
                 }
 
-                vehicles = repository.Vehicles
-                    .OrderBy(v => v.ID)
-                    .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
-                    .Take(pagingInfo.ItemsPerPage)
-                    .AsNoTracking();
+                if (!String.IsNullOrEmpty(search = search?.Trim()))
+                {
+                    searchby = searchby?.Trim();
+                    if (searchby != "plate1" && searchby != "plate2" && searchby != "plate3" && searchby != "rntrc")
+                    {
+                        return RedirectToAction();
+                    }
+                    else
+                    {
+                        filter.SearchBy = searchby;
+                        filter.Search = search;
+                        queryCondition = $" WHERE {searchby} LIKE @search";
+                        p0 = new MySqlParameter("@search", $"%{search}%");
+                    }
+                }
+
+                filter.Order = order;
+                filter.OrderBy = orderby;
+
+                string filterQuery = "SELECT * FROM vehicle";
+                filterQuery += queryCondition;
+                filterQuery += $" ORDER BY {filter.OrderBy} {filter.Order}";
+
+                paging.TotalItems = repository.DbContext().Vehicles
+                    .FromSqlRaw(filterQuery, p0).Count();
+
+                paging.Page = (page <= 1) ? 1 : (page >= paging.TotalPages ? paging.TotalPages : page);
+
+                vehicles = repository.DbContext().Vehicles
+                    .FromSqlRaw(filterQuery, p0)
+                    .Skip((paging.Page - 1) * paging.ItemsPerPage)
+                    .Take(paging.ItemsPerPage)
+                    .AsNoTracking()
+                    .ToList();
             }
 
-            ViewData["Title"] = "Lista de Veículos";
-            ViewData["Entity"] = "Veículos";
-            ViewData["Controller"] = "vehicles";
-            ViewData["Action"] = "list";
             return View(new ListViewModel
             {
                 JsonItems = JsonSerializer.Serialize(vehicles),
-                PagingInfo = pagingInfo
+                PagingInfo = paging,
+                ListFilter = filter
             });
+        }
+
+        [HttpPost]
+        public IActionResult List(
+            [FromForm]string orderby,
+            [FromForm]string order,
+            [FromForm]string searchby,
+            [FromForm]string search,
+            int _,
+            [FromForm]int page = 1
+        ){
+            orderby ??= "";
+            order ??= "";
+            searchby ??= "";
+            search = search?.Trim();
+
+            object query = new
+            {
+                page = (page == 1) ? null : page.ToString(),
+                orderby = (orderby == "id") ? null : orderby.Trim(),
+                order = (order == "asc") ? null : order.Trim(),
+                searchby = String.IsNullOrEmpty(search) ? null : searchby,
+                search
+            };
+
+            return RedirectToAction("List", "Vehicles", query);
         }
 
         [HttpGet]
