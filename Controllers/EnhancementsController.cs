@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 using WarehouseManager.Models;
 using WarehouseManager.Models.ViewModels;
@@ -15,47 +16,159 @@ namespace WarehouseManager.Controllers
     public class EnhancementsController : Controller
     {
         private readonly IWMRepository repository;
-        private int itemsPerPage = 5;
 
         public EnhancementsController(IWMRepository repo) => repository = repo;
 
         [HttpGet]
-        public IActionResult List([FromQuery]int page = 1)
-        {
-            IEnumerable<Enhancement> enhancements = null;
-            PagingInfo pagingInfo = new PagingInfo(
-                repository.Enhancements.Count(), itemsPerPage, page);
-            
-            if (pagingInfo.TotalItems != 0)
+        public IActionResult List(
+            string orderby,
+            string order,
+            string searchby,
+            string search,
+            string initDate,
+            string endDate,
+            int page = 1
+        ){
+            List<Enhancement> enhancements = null;
+            PagingInfo paging = new PagingInfo();
+            ListFilter filter = new ListFilter();
+
+            if (repository.Enhancements.Count() != 0)
             {
-                if (pagingInfo.Page < 1 ||
-                    pagingInfo.Page > pagingInfo.TotalPages)
+                orderby = String.IsNullOrWhiteSpace(orderby) ? "id" : orderby.Trim();
+                order = String.IsNullOrWhiteSpace(order) ? "asc" : order.Trim();
+
+                if ((orderby != "id" && orderby != "base" && orderby != "final" && orderby != "date") ||
+                    (order != "asc" && order != "desc"))
                 {
-                    return NotFound();
+                    return RedirectToAction();
                 }
 
-                enhancements = repository.Enhancements
-                    .OrderBy(e => e.ID)
-                    .Skip((pagingInfo.Page - 1) * pagingInfo.ItemsPerPage)
-                    .Take(pagingInfo.ItemsPerPage)
-                    .Include(e => e.BaseStock.Product)
-                    .Include(e => e.BaseStock.Owner)
-                    .Include(e => e.FinalStock.Product)
-                    .Include(e => e.FinalStock.Owner)
+                bool hasInitDate = false;
+                bool hasEndDate = false;
+                DateTime idt = new DateTime();
+                DateTime edt = new DateTime();
+                if (!String.IsNullOrWhiteSpace(initDate))
+                {
+                    if (!DateTime.TryParse(initDate, out idt))
+                    {
+                        return RedirectToAction();
+                    }
+                    hasInitDate = true;
+                }
+                if (!String.IsNullOrWhiteSpace(endDate))
+                {
+                    if (!DateTime.TryParse(endDate, out edt))
+                    {
+                        return RedirectToAction();
+                    }
+                    hasEndDate = true;
+                }
+                if (hasInitDate && hasEndDate && idt > edt)
+                {
+                    return RedirectToAction();
+                }
+
+                filter.Order = order;
+                filter.OrderBy = orderby;
+
+                string filterQuery = "SELECT enhancement.*, base, final FROM enhancement"
+                    + " INNER JOIN (SELECT stock.id AS s1_id, CONCAT(product.name, ' - ', client.name) AS base FROM stock"
+                    + " INNER JOIN product ON stock.product_id = product.id"
+                    + " INNER JOIN client ON stock.client_id = client.id) AS t1"
+                    + " ON enhancement.base_stock_id = t1.s1_id"
+                    + " INNER JOIN (SELECT stock.id AS s2_id, CONCAT(product.name, ' - ', client.name) AS final FROM stock"
+                    + " INNER JOIN product ON stock.product_id = product.id"
+                    + " INNER JOIN client ON stock.client_id = client.id) AS t2"
+                    + " ON enhancement.final_stock_id = t2.s2_id";
+
+                MySqlParameter p0 = null;
+                MySqlParameter p1 = null;
+                MySqlParameter p2 = null;
+                if (!String.IsNullOrWhiteSpace(search = search?.Trim()))
+                {
+                    searchby = searchby?.Trim();
+                    if (searchby != "base" && searchby != "final")
+                    {
+                        return RedirectToAction();
+                    }
+                    else
+                    {
+                        filter.SearchBy = searchby;
+                        filter.Search = search;
+                        filterQuery += $" WHERE {searchby} LIKE @search";
+                        p0 = new MySqlParameter("@search", $"%{search}%");
+                    }
+                }
+
+                if (hasInitDate)
+                {
+                    filterQuery += $" {(filterQuery.Contains("WHERE") ? "AND" : "WHERE")} CAST(enhancement.created_at AS DATE) >= CAST(@initdate AS DATE)";
+                    p1 = new MySqlParameter("@initdate", initDate);
+                }
+                if (hasEndDate)
+                {
+                    filterQuery += $" {(filterQuery.Contains("WHERE") ? "AND" : "WHERE")} CAST(enhancement.created_at AS DATE) <= CAST(@enddate AS DATE)";
+                    p2 = new MySqlParameter("@enddate", endDate);
+                }
+                filterQuery += $" ORDER BY {(filter.OrderBy == "date" ? "created_at" : filter.OrderBy)} {filter.Order}";
+
+                paging.TotalItems = repository.DbContext().Enhancements
+                    .FromSqlRaw(filterQuery, p0, p1, p2).Count();
+
+                paging.Page = (page <= 1) ? 1 : (page >= paging.TotalPages ? paging.TotalPages : page);
+
+                enhancements = repository.DbContext().Enhancements
+                    .FromSqlRaw(filterQuery, p0, p1, p2)
+                    .Skip((paging.Page - 1) * paging.ItemsPerPage)
+                    .Take(paging.ItemsPerPage)
+                    .Include(e => e.BaseStock).ThenInclude(s => s.Product)
+                    .Include(e => e.BaseStock).ThenInclude(s => s.Owner)
+                    .Include(e => e.FinalStock).ThenInclude(s => s.Product)
+                    .Include(e => e.FinalStock).ThenInclude(s => s.Owner)
                     .Include(e => e.Driver)
                     .Include(e => e.Vehicle)
-                    .AsNoTracking();
+                    .AsNoTracking().ToList();
             }
 
-            ViewData["Title"] = "Lista de Processamentos";
-            ViewData["Entity"] = "Processamentos";
-            ViewData["Controller"] = "enhancements";
-            ViewData["Action"] = "list";
+            ViewData["initDate"] = initDate;
+            ViewData["endDate"] = endDate;
             return View(new ListViewModel
             {
                 JsonItems = JsonSerializer.Serialize(enhancements),
-                PagingInfo = pagingInfo
+                PagingInfo = paging,
+                ListFilter = filter
             });
+        }
+
+        [HttpPost]
+        public IActionResult List(
+            [FromForm]string orderby,
+            [FromForm]string order,
+            [FromForm]string searchby,
+            [FromForm]string search,
+            [FromForm]string initDate,
+            [FromForm]string endDate,
+            int _,
+            [FromForm]int page = 1
+        ){
+            orderby ??= "";
+            order ??= "";
+            searchby ??= "";
+            search = search?.Trim();
+
+            object query = new
+            {
+                page = (page == 1) ? null : page.ToString(),
+                orderby = (orderby == "id") ? null : orderby.Trim(),
+                order = (order == "asc") ? null : order.Trim(),
+                searchby = String.IsNullOrEmpty(search) ? null : searchby,
+                search,
+                initDate = DateTime.TryParse(initDate, out DateTime _) ? initDate : null,
+                endDate = DateTime.TryParse(endDate, out DateTime _) ? endDate : null
+            };
+
+            return RedirectToAction("List", "Enhancements", query);
         }
 
         [HttpGet]
