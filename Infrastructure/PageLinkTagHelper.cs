@@ -42,7 +42,9 @@ namespace WarehouseManager.Infrastructure
                         orderby = (PagingModel.ListFilter.OrderBy == "id") ? "" : PagingModel.ListFilter.OrderBy,
                         order = (PagingModel.ListFilter.Order == "asc") ? "" : PagingModel.ListFilter.Order,
                         searchby = PagingModel.ListFilter.SearchBy as string,
-                        search = PagingModel.ListFilter.Search
+                        search = PagingModel.ListFilter.Search,
+                        initdate = PagingModel.ListFilter.InitDate,
+                        enddate = PagingModel.ListFilter.EndDate
                     });
                 tag.InnerHtml.Append(i.ToString());
 

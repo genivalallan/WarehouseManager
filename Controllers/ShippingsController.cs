@@ -25,8 +25,8 @@ namespace WarehouseManager.Controllers
             string order,
             string searchby,
             string search,
-            string initDate,
-            string endDate,
+            string initdate,
+            string enddate,
             int page = 1
         ){
             List<Shipping> shippings = null;
@@ -48,21 +48,23 @@ namespace WarehouseManager.Controllers
                 bool hasEndDate = false;
                 DateTime idt = new DateTime();
                 DateTime edt = new DateTime();
-                if (!String.IsNullOrWhiteSpace(initDate))
+                if (!String.IsNullOrWhiteSpace(initdate))
                 {
-                    if (!DateTime.TryParse(initDate, out idt))
+                    if (!DateTime.TryParse(initdate, out idt))
                     {
                         return RedirectToAction();
                     }
                     hasInitDate = true;
+                    filter.InitDate = initdate;
                 }
-                if (!String.IsNullOrWhiteSpace(endDate))
+                if (!String.IsNullOrWhiteSpace(enddate))
                 {
-                    if (!DateTime.TryParse(endDate, out edt))
+                    if (!DateTime.TryParse(enddate, out edt))
                     {
                         return RedirectToAction();
                     }
                     hasEndDate = true;
+                    filter.EndDate = enddate;
                 }
                 if (hasInitDate && hasEndDate && idt > edt)
                 {
@@ -101,12 +103,12 @@ namespace WarehouseManager.Controllers
                 if (hasInitDate)
                 {
                     filterQuery += $" {(filterQuery.Contains("WHERE") ? "AND" : "WHERE")} CAST(shipping.created_at AS DATE) >= CAST(@initdate AS DATE)";
-                    p1 = new MySqlParameter("@initdate", initDate);
+                    p1 = new MySqlParameter("@initdate", initdate);
                 }
                 if (hasEndDate)
                 {
                     filterQuery += $" {(filterQuery.Contains("WHERE") ? "AND" : "WHERE")} CAST(shipping.created_at AS DATE) <= CAST(@enddate AS DATE)";
-                    p2 = new MySqlParameter("@enddate", endDate);
+                    p2 = new MySqlParameter("@enddate", enddate);
                 }
                 filterQuery += $" ORDER BY {(filter.OrderBy == "date" ? "created_at" : filter.OrderBy)} {filter.Order}";
 
@@ -127,8 +129,6 @@ namespace WarehouseManager.Controllers
                     .AsNoTracking().ToList();
             }
 
-            ViewData["initDate"] = initDate;
-            ViewData["endDate"] = endDate;
             return View(new ListViewModel
             {
                 JsonItems = JsonSerializer.Serialize(shippings),

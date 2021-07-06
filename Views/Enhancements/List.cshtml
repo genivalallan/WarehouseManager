@@ -90,8 +90,8 @@ else
                     <div class="input-group-prepend">
                         <span class="input-group-text">Data</span>
                     </div>
-                    <input type="date" name="initDate" id="initDate" class="form-control" value='@ViewData["initDate"]'>
-                    <input type="date" name="endDate" id="endDate" class="form-control" value='@ViewData["endDate"]'>
+                    <input type="date" name="initDate" id="initDate" class="form-control" value="@Model.ListFilter.InitDate">
+                    <input type="date" name="endDate" id="endDate" class="form-control" value="@Model.ListFilter.EndDate">
                 </div>
             </div>
 
@@ -117,8 +117,8 @@ else
                             asp-route-searchby="@Model.ListFilter.SearchBy"
                             asp-route-search="@Model.ListFilter.Search"
                             asp-route-page='@(@Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'
-                            asp-route-initdate='@ViewData["initDate"]'
-                            asp-route-enddate='@ViewData["endDate"]'>#</a>
+                            asp-route-initdate="@Model.ListFilter.InitDate"
+                            asp-route-enddate="@Model.ListFilter.EndDate">#</a>
                     @if (Model.ListFilter.OrderBy == "id")
                     {
                         <a asp-action="List" asp-route-orderby=""
@@ -126,8 +126,8 @@ else
                             asp-route-searchby="@Model.ListFilter.SearchBy"
                             asp-route-search="@Model.ListFilter.Search"
                             asp-route-page='@(Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'
-                            asp-route-initdate='@ViewData["initDate"]'
-                            asp-route-enddate='@ViewData["endDate"]'>
+                            asp-route-initdate="@Model.ListFilter.InitDate"
+                            asp-route-enddate="@Model.ListFilter.EndDate">
                             @if (Model.ListFilter.Order == "asc")
                             {
                                 @("▲")
@@ -145,8 +145,8 @@ else
                             asp-route-searchby="@Model.ListFilter.SearchBy"
                             asp-route-search="@Model.ListFilter.Search"
                             asp-route-page='@(@Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'
-                            asp-route-initdate='@ViewData["initDate"]'
-                            asp-route-enddate='@ViewData["endDate"]'>Produto Base</a>
+                            asp-route-initdate="@Model.ListFilter.InitDate"
+                            asp-route-enddate="@Model.ListFilter.EndDate">Produto Base</a>
                     @if (Model.ListFilter.OrderBy == "base")
                     {
                         <a asp-action="List" asp-route-orderby="base"
@@ -154,8 +154,8 @@ else
                             asp-route-searchby="@Model.ListFilter.SearchBy"
                             asp-route-search="@Model.ListFilter.Search"
                             asp-route-page='@(Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'
-                            asp-route-initdate='@ViewData["initDate"]'
-                            asp-route-enddate='@ViewData["endDate"]'>
+                            asp-route-initdate="@Model.ListFilter.InitDate"
+                            asp-route-enddate="@Model.ListFilter.EndDate">
                             @if (Model.ListFilter.Order == "asc")
                             {
                                 @("▲")
@@ -173,8 +173,8 @@ else
                             asp-route-searchby="@Model.ListFilter.SearchBy"
                             asp-route-search="@Model.ListFilter.Search"
                             asp-route-page='@(@Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'
-                            asp-route-initdate='@ViewData["initDate"]'
-                            asp-route-enddate='@ViewData["endDate"]'>Produto Final</a>
+                            asp-route-initdate="@Model.ListFilter.InitDate"
+                            asp-route-enddate="@Model.ListFilter.EndDate">Produto Final</a>
                     @if (Model.ListFilter.OrderBy == "final")
                     {
                         <a asp-action="List" asp-route-orderby="final"
@@ -182,8 +182,8 @@ else
                             asp-route-searchby="@Model.ListFilter.SearchBy"
                             asp-route-search="@Model.ListFilter.Search"
                             asp-route-page='@(Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'
-                            asp-route-initdate='@ViewData["initDate"]'
-                            asp-route-enddate='@ViewData["endDate"]'>
+                            asp-route-initdate="@Model.ListFilter.InitDate"
+                            asp-route-enddate="@Model.ListFilter.EndDate">
                             @if (Model.ListFilter.Order == "asc")
                             {
                                 @("▲")
@@ -201,8 +201,8 @@ else
                             asp-route-searchby="@Model.ListFilter.SearchBy"
                             asp-route-search="@Model.ListFilter.Search"
                             asp-route-page='@(@Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'
-                            asp-route-initdate='@ViewData["initDate"]'
-                            asp-route-enddate='@ViewData["endDate"]'>Criado Em</a>
+                            asp-route-initdate="@Model.ListFilter.InitDate"
+                            asp-route-enddate="@Model.ListFilter.EndDate">Criado Em</a>
                     @if (Model.ListFilter.OrderBy == "date")
                     {
                         <a asp-action="List" asp-route-orderby="date"
@@ -210,8 +210,8 @@ else
                             asp-route-searchby="@Model.ListFilter.SearchBy"
                             asp-route-search="@Model.ListFilter.Search"
                             asp-route-page='@(Model.PagingInfo.Page == 1 ? "" : Model.PagingInfo.Page.ToString())'
-                            asp-route-initdate='@ViewData["initDate"]'
-                            asp-route-enddate='@ViewData["endDate"]'>
+                            asp-route-initdate="@Model.ListFilter.InitDate"
+                            asp-route-enddate="@Model.ListFilter.EndDate">
                             @if (Model.ListFilter.Order == "asc")
                             {
                                 @("▲")
