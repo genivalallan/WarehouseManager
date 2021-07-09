@@ -95,7 +95,7 @@ namespace WarehouseManager.Controllers
                     {
                         filter.SearchBy = searchby;
                         filter.Search = search;
-                        filterQuery += $" WHERE {searchby} LIKE @search";
+                        filterQuery += $" WHERE {(searchby == "dest" ? "client.name" : "origin")} LIKE @search";
                         p0 = new MySqlParameter("@search", $"%{search}%");
                     }
                 }
